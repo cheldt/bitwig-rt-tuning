@@ -309,6 +309,11 @@ if [ "$PIN_BITWIG" -eq 1 ] && [ "$STEER_THREADS" -eq 1 ] && [ ! -x "$STEER_SH" ]
     PIN_BITWIG=0
 fi
 
+# Kontakt 7 needs its Wine host to run with a working directory inside the prefix, or it
+# aborts on load -- see docs/kontakt7-zmq-crash.md. That cannot be arranged from here:
+# Bitwig chdirs BitwigAudioEngine and BitwigPluginHost to ~/.BitwigStudio/log, so a cwd set
+# before `bitwig-studio` never reaches the plugin hosts. It is done in the
+# ~/.local/bin/yabridge-host.exe wrapper instead.
 if [ "$PIN_BITWIG" -eq 1 ]; then
     echo "Starting Bitwig (pinned to P-cores $PCORES)..."
     # Affinity is inherited across fork/exec, so this one mask covers

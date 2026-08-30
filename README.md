@@ -84,8 +84,9 @@ tools/catch-spike.py            find the thread burning CPU in a spike
 tools/catch-stall.py            tell a long *run* apart from a long *wait*
 tools/ab-nvme-sched.sh          A/B the NVMe scheduler in one live session
 docs/dsp-spike-investigation.md the investigation
+docs/kontakt7-zmq-crash.md      why the yabridge host needs a cwd inside the wine prefix
 docs/measurements/              raw logs behind the claims
-docs/reference-*                config files this setup depends on, for reference
+docs/reference-*                config files and wrappers this setup depends on, for reference
 ```
 
 ## Usage
