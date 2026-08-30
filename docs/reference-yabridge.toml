@@ -1,0 +1,13 @@
+# Run every Kontakt instance inside a single Wine process instead of one process
+# per instance. Collapses 8 yabridge-host processes (and 8 wineserver clients) into 1.
+#
+# Patterns match paths to the yabridge .so files relative to this file, and only the
+# first matching pattern is used -- so this must say Kontakt.so, not Kontakt.dll.
+#
+# Trade-off: all instances share a process, so a crash in one takes down all of them.
+# Comment out the `group` line to go back to individual hosting.
+
+# DISABLED 2026-08-29: grouping raised Load AVG 0.175 -> 0.229 ms and Load MAX
+# 6.05 -> 8.00 ms. 8 Kontakts in one Wine process serialise on shared locks.
+# ["Kontakt.so"]
+# group = "kontakt"

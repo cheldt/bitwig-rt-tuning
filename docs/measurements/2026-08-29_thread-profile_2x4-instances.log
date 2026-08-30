@@ -1,0 +1,593 @@
+watching 16 processes, threshold 3.0ms per 100ms window, 60s
+19:43:49  BitwigStudio/X11RenderComman 8.7ms  |  yabridge-host.e/audio 8.3ms  |  BitwigAudioEngi/data-loop.0 6.2ms  |  yabridge-host.e/audio 5.4ms
+19:43:49  yabridge-host.e/audio 8.5ms  |  BitwigStudio/X11RenderComman 8.2ms  |  BitwigAudioEngi/data-loop.0 7.1ms  |  yabridge-host.e/audio 4.7ms
+19:43:49  BitwigStudio/ZWorkerOld#1 80.9ms  |  BitwigStudio/ZWorkerOld#7 14.0ms  |  BitwigStudio/X11RenderComman 11.5ms  |  yabridge-host.e/audio 8.9ms
+19:43:49  BitwigStudio/X11RenderComman 8.1ms  |  yabridge-host.e/audio 7.7ms  |  BitwigStudio/BitwigStudio 5.5ms  |  yabridge-host.e/audio 5.2ms
+19:43:49  BitwigStudio/X11RenderComman 9.9ms  |  yabridge-host.e/audio 7.7ms  |  yabridge-host.e/audio 5.3ms  |  BitwigAudioEngi/data-loop.0 5.1ms
+19:43:49  BitwigStudio/X11RenderComman 9.0ms  |  yabridge-host.e/audio 9.0ms  |  yabridge-host.e/audio 6.4ms  |  BitwigStudio/BitwigStudio 5.1ms
+19:43:50  BitwigStudio/X11RenderComman 7.9ms  |  yabridge-host.e/audio 7.7ms  |  BitwigAudioEngi/data-loop.0 7.0ms  |  yabridge-host.e/audio 5.1ms
+19:43:50  yabridge-host.e/audio 9.3ms  |  BitwigStudio/X11RenderComman 8.3ms  |  BitwigAudioEngi/data-loop.0 6.9ms  |  yabridge-host.e/audio 5.1ms
+19:43:50  BitwigStudio/X11RenderComman 8.4ms  |  BitwigAudioEngi/data-loop.0 5.4ms  |  yabridge-host.e/audio 4.6ms  |  BitwigStudio/BitwigStudio 4.5ms
+19:43:50  BitwigStudio/X11RenderComman 9.5ms  |  BitwigStudio/BitwigStudio 7.4ms  |  BitwigAudioEngi/data-loop.0 6.1ms  |  yabridge-host.e/audio 5.1ms
+19:43:50  BitwigStudio/X11RenderComman 8.0ms  |  BitwigAudioEngi/data-loop.0 6.4ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.2ms
+19:43:50  BitwigStudio/X11RenderComman 8.2ms  |  BitwigAudioEngi/data-loop.0 6.6ms  |  BitwigStudio/BitwigStudio 5.6ms  |  yabridge-host.e/audio 4.8ms
+19:43:50  BitwigStudio/X11RenderComman 7.8ms  |  BitwigAudioEngi/data-loop.0 5.9ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.5ms
+19:43:50  BitwigStudio/X11RenderComman 8.6ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 4.9ms
+19:43:50  BitwigStudio/X11RenderComman 7.7ms  |  BitwigStudio/BitwigStudio 5.9ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.2ms
+19:43:50  BitwigStudio/X11RenderComman 8.7ms  |  BitwigAudioEngi/data-loop.0 5.6ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 5.0ms
+19:43:51  BitwigStudio/X11RenderComman 8.3ms  |  BitwigAudioEngi/data-loop.0 7.5ms  |  BitwigStudio/BitwigStudio 4.8ms  |  yabridge-host.e/audio 4.6ms
+19:43:51  BitwigStudio/X11RenderComman 8.5ms  |  BitwigStudio/BitwigStudio 5.1ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.7ms
+19:43:51  BitwigStudio/X11RenderComman 7.7ms  |  yabridge-host.e/audio 4.7ms  |  BitwigStudio/BitwigStudio 4.5ms  |  yabridge-host.e/audio 4.0ms
+19:43:51  BitwigStudio/X11RenderComman 9.4ms  |  BitwigStudio/BitwigStudio 4.8ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.3ms
+19:43:51  BitwigStudio/X11RenderComman 7.5ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 4.2ms
+19:43:51  BitwigStudio/X11RenderComman 11.1ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 4.8ms  |  BitwigStudio/BitwigStudio 4.7ms
+19:43:51  BitwigStudio/X11RenderComman 8.0ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/BitwigStudio 4.4ms
+19:43:51  BitwigStudio/X11RenderComman 9.6ms  |  yabridge-host.e/audio 6.0ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/BitwigStudio 5.1ms
+19:43:51  BitwigStudio/X11RenderComman 8.1ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 3.8ms
+19:43:52  BitwigStudio/X11RenderComman 8.6ms  |  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/BitwigStudio 4.7ms
+19:43:52  BitwigStudio/X11RenderComman 8.2ms  |  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/BitwigStudio 4.3ms
+19:43:52  BitwigStudio/X11RenderComman 8.9ms  |  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 4.3ms
+19:43:52  BitwigStudio/X11RenderComman 7.9ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.8ms  |  BitwigStudio/BitwigStudio 4.2ms
+19:43:52  BitwigStudio/X11RenderComman 8.4ms  |  BitwigStudio/BitwigStudio 4.5ms  |  yabridge-host.e/audio 4.0ms  |  yabridge-host.e/audio 4.0ms
+19:43:52  BitwigStudio/X11RenderComman 8.5ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.8ms  |  BitwigStudio/BitwigStudio 4.7ms
+19:43:52  BitwigStudio/X11RenderComman 9.3ms  |  yabridge-host.e/audio 5.5ms  |  BitwigStudio/BitwigStudio 5.2ms  |  yabridge-host.e/audio 5.0ms
+19:43:52  BitwigStudio/X11RenderComman 7.9ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 5.0ms
+19:43:52  BitwigStudio/X11RenderComman 8.8ms  |  yabridge-host.e/audio 6.5ms  |  BitwigStudio/BitwigStudio 5.8ms  |  yabridge-host.e/audio 5.7ms
+19:43:52  yabridge-host.e/audio 8.0ms  |  BitwigStudio/X11RenderComman 7.8ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/BitwigStudio 5.0ms
+19:43:53  BitwigStudio/X11RenderComman 8.7ms  |  yabridge-host.e/audio 8.3ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/BitwigStudio 5.1ms
+19:43:53  BitwigStudio/X11RenderComman 9.0ms  |  yabridge-host.e/audio 7.2ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 4.6ms
+19:43:53  BitwigStudio/X11RenderComman 8.3ms  |  yabridge-host.e/audio 8.1ms  |  BitwigStudio/BitwigStudio 5.4ms  |  yabridge-host.e/audio 4.6ms
+19:43:53  BitwigStudio/X11RenderComman 8.0ms  |  yabridge-host.e/audio 7.0ms  |  BitwigStudio/BitwigStudio 4.8ms  |  yabridge-host.e/audio 4.4ms
+19:43:53  BitwigStudio/X11RenderComman 7.9ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/BitwigStudio 4.6ms  |  yabridge-host.e/audio 4.1ms
+19:43:53  BitwigStudio/X11RenderComman 8.5ms  |  yabridge-host.e/audio 7.2ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 4.9ms
+19:43:53  BitwigStudio/X11RenderComman 7.5ms  |  yabridge-host.e/audio 7.3ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 4.1ms
+19:43:53  BitwigStudio/X11RenderComman 8.2ms  |  yabridge-host.e/audio 8.0ms  |  yabridge-host.e/audio 4.7ms  |  BitwigStudio/BitwigStudio 4.5ms
+19:43:53  yabridge-host.e/audio 10.2ms  |  BitwigStudio/X11RenderComman 8.4ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 4.3ms
+19:43:54  BitwigStudio/X11RenderComman 8.4ms  |  yabridge-host.e/audio 7.6ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/BitwigStudio 5.0ms
+19:43:54  BitwigStudio/X11RenderComman 8.0ms  |  yabridge-host.e/audio 7.9ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 4.5ms
+19:43:54  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 8.4ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/BitwigStudio 4.4ms
+19:43:54  BitwigStudio/X11RenderComman 8.3ms  |  yabridge-host.e/audio 7.5ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 4.4ms
+19:43:54  BitwigStudio/X11RenderComman 9.0ms  |  yabridge-host.e/audio 8.1ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/BitwigStudio 4.8ms
+19:43:54  BitwigStudio/X11RenderComman 7.5ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 4.2ms
+19:43:54  BitwigStudio/X11RenderComman 8.2ms  |  yabridge-host.e/audio 6.5ms  |  BitwigStudio/BitwigStudio 4.8ms  |  yabridge-host.e/audio 3.9ms
+19:43:54  BitwigStudio/X11RenderComman 8.2ms  |  yabridge-host.e/audio 7.0ms  |  yabridge-host.e/audio 4.8ms  |  BitwigStudio/BitwigStudio 4.5ms
+19:43:54  BitwigStudio/X11RenderComman 8.5ms  |  yabridge-host.e/audio 6.8ms  |  BitwigStudio/BitwigStudio 4.8ms  |  yabridge-host.e/audio 4.7ms
+19:43:54  BitwigStudio/X11RenderComman 7.4ms  |  yabridge-host.e/audio 7.0ms  |  yabridge-host.e/audio 5.5ms  |  BitwigStudio/BitwigStudio 4.5ms
+19:43:55  BitwigStudio/X11RenderComman 8.6ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 4.7ms
+19:43:55  BitwigStudio/X11RenderComman 7.3ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 4.3ms
+19:43:55  BitwigStudio/X11RenderComman 9.6ms  |  BitwigStudio/BitwigStudio 6.2ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.4ms
+19:43:55  BitwigStudio/X11RenderComman 7.3ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.6ms  |  BitwigStudio/BitwigStudio 4.3ms
+19:43:55  BitwigStudio/X11RenderComman 8.5ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 4.7ms  |  yabridge-host.e/audio 4.6ms
+19:43:55  BitwigStudio/X11RenderComman 7.8ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.7ms  |  BitwigStudio/BitwigStudio 4.2ms
+19:43:55  BitwigStudio/X11RenderComman 8.2ms  |  BitwigStudio/BitwigStudio 4.7ms  |  yabridge-host.e/audio 4.2ms  |  yabridge-host.e/audio 4.1ms
+19:43:55  BitwigStudio/X11RenderComman 7.9ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.8ms  |  BitwigStudio/BitwigStudio 4.6ms
+19:43:55  BitwigStudio/X11RenderComman 8.5ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 4.6ms  |  BitwigStudio/BitwigStudio 4.6ms
+19:43:55  BitwigStudio/X11RenderComman 9.3ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 4.6ms
+19:43:56  BitwigStudio/X11RenderComman 7.6ms  |  BitwigStudio/BitwigStudio 5.5ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.2ms
+19:43:56  BitwigStudio/X11RenderComman 8.5ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 4.8ms
+19:43:56  BitwigStudio/X11RenderComman 8.7ms  |  BitwigStudio/BitwigStudio 6.0ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.4ms
+19:43:56  BitwigStudio/X11RenderComman 8.3ms  |  BitwigStudio/BitwigStudio 5.7ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.3ms
+19:43:56  BitwigStudio/X11RenderComman 9.4ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/BitwigStudio 5.4ms  |  yabridge-host.e/audio 5.4ms
+19:43:56  BitwigStudio/X11RenderComman 9.5ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/BitwigStudio 5.2ms
+19:43:56  BitwigStudio/X11RenderComman 8.9ms  |  BitwigStudio/BitwigStudio 4.9ms  |  yabridge-host.e/audio 4.6ms  |  yabridge-host.e/audio 4.5ms
+19:43:56  BitwigStudio/X11RenderComman 8.8ms  |  BitwigStudio/BitwigStudio 5.4ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.5ms
+19:43:56  BitwigStudio/X11RenderComman 8.1ms  |  BitwigStudio/BitwigStudio 4.8ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.6ms
+19:43:57  BitwigStudio/X11RenderComman 8.7ms  |  BitwigStudio/BitwigStudio 6.7ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 4.7ms
+19:43:57  BitwigStudio/BitwigStudio 10.6ms  |  BitwigStudio/X11RenderComman 10.3ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.5ms
+19:43:57  BitwigStudio/X11RenderComman 9.7ms  |  BitwigStudio/BitwigStudio 6.3ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.4ms
+19:43:57  BitwigStudio/X11RenderComman 8.9ms  |  yabridge-host.e/audio 6.1ms  |  yabridge-host.e/audio 6.0ms  |  BitwigStudio/BitwigStudio 5.6ms
+19:43:57  BitwigStudio/X11RenderComman 9.3ms  |  BitwigStudio/BitwigStudio 8.7ms  |  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.5ms
+19:43:57  BitwigStudio/X11RenderComman 8.7ms  |  BitwigStudio/BitwigStudio 6.8ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.6ms
+19:43:57  BitwigStudio/X11RenderComman 8.9ms  |  BitwigStudio/BitwigStudio 5.4ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms
+19:43:57  BitwigStudio/X11RenderComman 8.4ms  |  BitwigStudio/BitwigStudio 5.8ms  |  yabridge-host.e/audio 4.6ms  |  yabridge-host.e/audio 3.9ms
+19:43:57  BitwigStudio/X11RenderComman 8.2ms  |  yabridge-host.e/audio 4.6ms  |  BitwigStudio/BitwigStudio 4.5ms  |  yabridge-host.e/audio 4.0ms
+19:43:57  BitwigStudio/X11RenderComman 9.6ms  |  BitwigStudio/BitwigStudio 5.8ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.8ms
+19:43:58  BitwigStudio/X11RenderComman 8.6ms  |  BitwigStudio/BitwigStudio 4.9ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.6ms
+19:43:58  BitwigStudio/X11RenderComman 10.1ms  |  BitwigStudio/BitwigStudio 6.6ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.2ms
+19:43:58  BitwigStudio/X11RenderComman 9.8ms  |  BitwigStudio/BitwigStudio 6.3ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.0ms
+19:43:58  BitwigStudio/X11RenderComman 9.6ms  |  BitwigStudio/BitwigStudio 5.8ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.2ms
+19:43:58  BitwigStudio/X11RenderComman 8.6ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/BitwigStudio 5.2ms
+19:43:58  BitwigStudio/X11RenderComman 9.4ms  |  BitwigStudio/BitwigStudio 6.1ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.4ms
+19:43:58  BitwigStudio/X11RenderComman 9.2ms  |  BitwigAudioEngi/data-loop.0 6.4ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.5ms
+19:43:58  BitwigStudio/X11RenderComman 10.4ms  |  BitwigAudioEngi/data-loop.0 6.3ms  |  yabridge-host.e/audio 6.0ms  |  yabridge-host.e/audio 5.5ms
+19:43:58  BitwigStudio/X11RenderComman 14.6ms  |  yabridge-host.e/audio 7.2ms  |  BitwigAudioEngi/data-loop.0 5.9ms  |  BitwigStudio/BitwigStudio 5.7ms
+19:43:59  yabridge-host.e/audio 7.3ms  |  BitwigStudio/X11RenderComman 6.3ms  |  BitwigStudio/BitwigStudio 5.8ms  |  BitwigAudioEngi/data-loop.0 5.7ms
+19:43:59  BitwigStudio/X11RenderComman 29.2ms  |  BitwigStudio/BitwigStudio 12.9ms  |  yabridge-host.e/audio 7.3ms  |  yabridge-host.e/audio 5.7ms
+19:43:59  yabridge-host.e/audio 8.2ms  |  BitwigStudio/X11RenderComman 7.0ms  |  BitwigAudioEngi/data-loop.0 5.6ms  |  yabridge-host.e/audio 4.7ms
+19:43:59  yabridge-host.e/audio 8.3ms  |  BitwigStudio/X11RenderComman 6.5ms  |  yabridge-host.e/audio 5.5ms  |  BitwigAudioEngi/data-loop.0 5.4ms
+19:43:59  yabridge-host.e/audio 8.7ms  |  BitwigAudioEngi/data-loop.0 8.0ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.3ms
+19:43:59  yabridge-host.e/audio 9.0ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 5.8ms  |  BitwigAudioEngi/data-loop.0 5.7ms
+19:43:59  BitwigStudio/X11RenderComman 8.8ms  |  yabridge-host.e/audio 7.4ms  |  BitwigAudioEngi/data-loop.0 6.2ms  |  yabridge-host.e/audio 5.7ms
+19:43:59  yabridge-host.e/audio 8.6ms  |  BitwigStudio/X11RenderComman 5.9ms  |  BitwigAudioEngi/data-loop.0 5.1ms  |  yabridge-host.e/audio 4.6ms
+19:43:59  yabridge-host.e/audio 8.3ms  |  BitwigStudio/X11RenderComman 6.1ms  |  BitwigAudioEngi/data-loop.0 5.1ms  |  yabridge-host.e/audio 5.0ms
+19:43:59  yabridge-host.e/audio 6.4ms  |  BitwigStudio/X11RenderComman 6.1ms  |  BitwigAudioEngi/data-loop.0 4.8ms  |  yabridge-host.e/audio 4.1ms
+19:44:00  yabridge-host.e/audio 7.0ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 4.7ms  |  BitwigAudioEngi/data-loop.0 4.3ms
+19:44:00  yabridge-host.e/audio 6.5ms  |  BitwigAudioEngi/data-loop.0 6.4ms  |  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 4.9ms
+19:44:00  yabridge-host.e/audio 8.3ms  |  BitwigStudio/BitwigStudio 6.8ms  |  BitwigStudio/X11RenderComman 6.2ms  |  BitwigAudioEngi/data-loop.0 5.5ms
+19:44:00  yabridge-host.e/audio 8.4ms  |  BitwigStudio/ZWorkerYoung#0 6.2ms  |  BitwigStudio/X11RenderComman 6.0ms  |  BitwigAudioEngi/data-loop.0 5.5ms
+19:44:00  BitwigStudio/ZWorkerOld#6 77.5ms  |  BitwigStudio/ZWorkerOld#4 15.4ms  |  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 7.1ms
+19:44:00  yabridge-host.e/audio 9.4ms  |  BitwigStudio/X11RenderComman 7.8ms  |  yabridge-host.e/audio 5.7ms  |  BitwigAudioEngi/data-loop.0 4.8ms
+19:44:00  yabridge-host.e/audio 8.8ms  |  BitwigStudio/X11RenderComman 6.1ms  |  BitwigAudioEngi/data-loop.0 5.7ms  |  yabridge-host.e/audio 5.2ms
+19:44:00  yabridge-host.e/audio 10.8ms  |  BitwigStudio/BitwigStudio 7.7ms  |  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 5.6ms
+19:44:00  yabridge-host.e/audio 8.9ms  |  BitwigStudio/X11RenderComman 7.2ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/BitwigStudio 4.9ms
+19:44:00  yabridge-host.e/audio 7.2ms  |  BitwigStudio/X11RenderComman 6.6ms  |  yabridge-host.e/audio 5.5ms
+19:44:01  yabridge-host.e/audio 7.0ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 4.3ms
+19:44:01  yabridge-host.e/audio 7.4ms  |  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.7ms  |  BitwigStudio/BitwigStudio 3.6ms
+19:44:01  BitwigStudio/X11RenderComman 6.5ms  |  yabridge-host.e/audio 6.5ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 4.4ms
+19:44:01  BitwigStudio/X11RenderComman 6.6ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 4.0ms
+19:44:01  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.2ms
+19:44:01  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.6ms
+19:44:01  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 6.0ms  |  yabridge-host.e/audio 5.8ms
+19:44:01  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/X11RenderComman 4.9ms
+19:44:01  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.7ms
+19:44:02  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.4ms
+19:44:02  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.4ms  |  yabridge-host.e/audio 3.8ms
+19:44:02  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 4.6ms  |  yabridge-host.e/audio 4.6ms
+19:44:02  BitwigStudio/X11RenderComman 7.8ms  |  yabridge-host.e/audio 4.5ms  |  yabridge-host.e/audio 4.3ms
+19:44:02  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.2ms
+19:44:02  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 4.8ms  |  BitwigStudio/BitwigStudio 3.5ms
+19:44:02  yabridge-host.e/audio 5.7ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.8ms
+19:44:02  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.2ms
+19:44:02  yabridge-host.e/audio 5.5ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.1ms
+19:44:02  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 4.7ms
+19:44:03  BitwigStudio/BitwigStudio 7.7ms  |  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.6ms
+19:44:03  BitwigStudio/BitwigStudio 8.1ms  |  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.1ms
+19:44:03  BitwigStudio/X11RenderComman 6.6ms  |  BitwigStudio/BitwigStudio 6.0ms  |  yabridge-host.e/audio 4.5ms  |  yabridge-host.e/audio 4.5ms
+19:44:03  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 3.9ms
+19:44:03  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.6ms  |  BitwigStudio/BitwigStudio 3.3ms
+19:44:03  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.2ms
+19:44:03  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:03  BitwigStudio/X11RenderComman 9.1ms  |  yabridge-host.e/audio 6.2ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/BitwigStudio 5.2ms
+19:44:03  BitwigStudio/X11RenderComman 28.9ms  |  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 5.0ms
+19:44:04  BitwigStudio/X11RenderComman 8.9ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 4.6ms
+19:44:04  BitwigStudio/X11RenderComman 8.1ms  |  BitwigStudio/BitwigStudio 5.4ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.1ms
+19:44:04  BitwigStudio/X11RenderComman 9.2ms  |  BitwigStudio/BitwigStudio 5.3ms  |  yabridge-host.e/audio 4.5ms  |  yabridge-host.e/audio 4.4ms
+19:44:04  BitwigStudio/X11RenderComman 8.4ms  |  BitwigStudio/BitwigStudio 6.2ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.9ms
+19:44:04  BitwigStudio/X11RenderComman 16.2ms  |  BitwigStudio/BitwigStudio 13.2ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.0ms
+19:44:04  BitwigStudio/BitwigStudio 11.3ms  |  BitwigStudio/C2 CompilerThre 10.1ms  |  BitwigStudio/X11RenderComman 9.9ms  |  yabridge-host.e/audio 5.4ms
+19:44:04  BitwigStudio/X11RenderComman 9.6ms  |  BitwigStudio/BitwigStudio 6.3ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.2ms
+19:44:04  BitwigStudio/X11RenderComman 8.4ms  |  BitwigStudio/BitwigStudio 5.4ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 4.8ms
+19:44:04  BitwigStudio/X11RenderComman 8.5ms  |  BitwigStudio/BitwigStudio 5.8ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.1ms
+19:44:04  BitwigStudio/X11RenderComman 8.8ms  |  BitwigStudio/BitwigStudio 5.6ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.1ms
+19:44:05  yabridge-host.e/audio 7.7ms  |  BitwigStudio/X11RenderComman 7.6ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 4.7ms
+19:44:05  BitwigStudio/X11RenderComman 9.0ms  |  yabridge-host.e/audio 8.9ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/BitwigStudio 5.1ms
+19:44:05  yabridge-host.e/audio 8.9ms  |  BitwigStudio/X11RenderComman 8.2ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/BitwigStudio 4.7ms
+19:44:05  BitwigStudio/X11RenderComman 9.1ms  |  yabridge-host.e/audio 6.7ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 5.0ms
+19:44:05  BitwigStudio/X11RenderComman 13.3ms  |  yabridge-host.e/audio 7.2ms  |  BitwigStudio/BitwigStudio 5.6ms  |  yabridge-host.e/audio 4.7ms
+19:44:05  yabridge-host.e/audio 6.5ms  |  BitwigStudio/X11RenderComman 5.8ms  |  BitwigStudio/BitwigStudio 5.4ms  |  yabridge-host.e/audio 4.5ms
+19:44:05  yabridge-host.e/audio 7.8ms  |  BitwigStudio/X11RenderComman 5.7ms  |  BitwigStudio/BitwigStudio 5.3ms  |  yabridge-host.e/audio 5.2ms
+19:44:05  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 7.0ms  |  BitwigStudio/BitwigStudio 4.9ms  |  yabridge-host.e/audio 4.7ms
+19:44:05  BitwigStudio/X11RenderComman 9.1ms  |  yabridge-host.e/audio 7.7ms  |  BitwigStudio/BitwigStudio 6.3ms  |  yabridge-host.e/audio 5.7ms
+19:44:06  yabridge-host.e/audio 9.9ms  |  BitwigStudio/X11RenderComman 8.9ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/BitwigStudio 4.2ms
+19:44:06  yabridge-host.e/audio 8.4ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/X11RenderComman 5.2ms
+19:44:06  yabridge-host.e/audio 8.1ms  |  BitwigStudio/X11RenderComman 7.2ms  |  BitwigStudio/BitwigStudio 6.4ms  |  yabridge-host.e/audio 5.4ms
+19:44:06  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 7.6ms  |  BitwigStudio/BitwigStudio 7.2ms  |  yabridge-host.e/audio 5.5ms
+19:44:06  BitwigStudio/X11RenderComman 7.0ms  |  yabridge-host.e/audio 6.2ms  |  BitwigStudio/BitwigStudio 4.4ms  |  yabridge-host.e/audio 4.4ms
+19:44:06  yabridge-host.e/audio 7.3ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:06  yabridge-host.e/audio 6.9ms  |  BitwigStudio/X11RenderComman 6.5ms  |  yabridge-host.e/audio 4.4ms  |  BitwigStudio/BitwigStudio 4.1ms
+19:44:06  yabridge-host.e/audio 6.5ms  |  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:06  BitwigStudio/X11RenderComman 14.3ms  |  BitwigStudio/BitwigStudio 9.7ms  |  yabridge-host.e/audio 8.1ms  |  yabridge-host.e/audio 6.0ms
+19:44:06  BitwigStudio/X11RenderComman 20.6ms  |  BitwigStudio/BitwigStudio 8.5ms  |  yabridge-host.e/audio 7.5ms  |  yabridge-host.e/audio 5.1ms
+19:44:07  BitwigStudio/X11RenderComman 9.7ms  |  yabridge-host.e/audio 8.3ms  |  yabridge-host.e/audio 5.6ms
+19:44:07  BitwigStudio/X11RenderComman 8.1ms  |  yabridge-host.e/audio 7.8ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 3.7ms
+19:44:07  BitwigStudio/X11RenderComman 9.3ms  |  yabridge-host.e/audio 8.1ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/BitwigStudio 4.9ms
+19:44:07  yabridge-host.e/audio 9.2ms  |  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 5.5ms
+19:44:07  yabridge-host.e/audio 8.3ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/BitwigStudio 3.7ms
+19:44:07  yabridge-host.e/audio 7.8ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.2ms
+19:44:07  yabridge-host.e/audio 7.5ms  |  BitwigStudio/X11RenderComman 6.5ms  |  BitwigStudio/BitwigStudio 5.6ms  |  yabridge-host.e/audio 4.0ms
+19:44:07  yabridge-host.e/audio 6.4ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 4.7ms
+19:44:07  yabridge-host.e/audio 8.1ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.4ms
+19:44:07  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.0ms
+19:44:08  yabridge-host.e/audio 7.8ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.4ms
+19:44:08  yabridge-host.e/audio 9.1ms  |  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 6.1ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:08  BitwigStudio/X11RenderComman 8.8ms  |  yabridge-host.e/audio 7.7ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/BitwigStudio 3.6ms
+19:44:08  yabridge-host.e/audio 8.2ms  |  BitwigStudio/X11RenderComman 6.8ms  |  yabridge-host.e/audio 5.4ms
+19:44:08  yabridge-host.e/audio 7.4ms  |  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 4.6ms
+19:44:08  yabridge-host.e/audio 6.4ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 4.8ms
+19:44:08  yabridge-host.e/audio 8.8ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.5ms
+19:44:08  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.2ms
+19:44:08  yabridge-host.e/audio 7.1ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 3.4ms
+19:44:09  yabridge-host.e/audio 8.3ms  |  yabridge-host.e/audio 5.5ms  |  BitwigStudio/X11RenderComman 5.3ms
+19:44:09  yabridge-host.e/audio 7.1ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.5ms  |  BitwigPluginHos/bitwig-remote-p 3.2ms
+19:44:09  yabridge-host.e/audio 8.9ms  |  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.9ms  |  BitwigPluginHos/bitwig-remote-p 3.2ms
+19:44:09  yabridge-host.e/audio 7.2ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 4.9ms  |  BitwigAudioEngi/data-loop.0 4.0ms
+19:44:09  yabridge-host.e/audio 8.2ms  |  BitwigStudio/X11RenderComman 6.3ms  |  BitwigAudioEngi/data-loop.0 5.4ms  |  yabridge-host.e/audio 5.4ms
+19:44:09  yabridge-host.e/audio 9.2ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.5ms  |  BitwigAudioEngi/data-loop.0 5.0ms
+19:44:09  yabridge-host.e/audio 9.7ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.9ms  |  BitwigAudioEngi/data-loop.0 5.5ms
+19:44:09  BitwigAudioEngi/data-loop.0 8.3ms  |  yabridge-host.e/audio 7.8ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.2ms
+19:44:09  BitwigAudioEngi/data-loop.0 7.8ms  |  yabridge-host.e/audio 6.8ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 3.8ms
+19:44:09  yabridge-host.e/audio 9.7ms  |  BitwigAudioEngi/data-loop.0 7.3ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 4.9ms
+19:44:10  yabridge-host.e/audio 8.0ms  |  BitwigAudioEngi/data-loop.0 7.8ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 4.9ms
+19:44:10  yabridge-host.e/audio 7.2ms  |  BitwigAudioEngi/data-loop.0 7.1ms  |  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 5.0ms
+19:44:10  yabridge-host.e/audio 8.2ms  |  BitwigAudioEngi/data-loop.0 6.4ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.3ms
+19:44:10  yabridge-host.e/audio 10.2ms  |  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.7ms  |  BitwigAudioEngi/data-loop.0 5.0ms
+19:44:10  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.6ms  |  BitwigAudioEngi/data-loop.0 5.0ms
+19:44:10  yabridge-host.e/audio 8.3ms  |  BitwigStudio/X11RenderComman 5.7ms  |  BitwigAudioEngi/data-loop.0 5.5ms  |  yabridge-host.e/audio 5.4ms
+19:44:10  BitwigAudioEngi/data-loop.0 7.1ms  |  yabridge-host.e/audio 6.6ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 4.5ms
+19:44:10  yabridge-host.e/audio 8.8ms  |  BitwigAudioEngi/data-loop.0 7.0ms  |  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.1ms
+19:44:10  yabridge-host.e/audio 9.1ms  |  BitwigAudioEngi/data-loop.0 6.2ms  |  BitwigStudio/X11RenderComman 4.9ms  |  yabridge-host.e/audio 4.1ms
+19:44:11  BitwigAudioEngi/data-loop.0 7.3ms  |  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.4ms
+19:44:11  BitwigAudioEngi/data-loop.0 8.6ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms
+19:44:11  BitwigAudioEngi/data-loop.0 7.8ms  |  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.5ms
+19:44:11  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.5ms  |  BitwigStudio/X11RenderComman 5.5ms  |  BitwigAudioEngi/data-loop.0 4.4ms
+19:44:11  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 4.9ms
+19:44:11  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 4.5ms  |  BitwigPluginHos/bitwig-remote-p 3.3ms
+19:44:11  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.2ms
+19:44:11  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.2ms
+19:44:11  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.7ms
+19:44:11  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 4.9ms  |  BitwigPluginHos/bitwig-remote-p 3.9ms
+19:44:12  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 4.0ms  |  yabridge-host.e/audio 4.0ms  |  BitwigPluginHos/bitwig-remote-p 3.3ms
+19:44:12  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.8ms
+19:44:12  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 4.9ms
+19:44:12  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 4.5ms
+19:44:12  yabridge-host.e/audio 5.5ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.3ms
+19:44:12  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:12  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.5ms
+19:44:12  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.9ms
+19:44:12  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.4ms
+19:44:12  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.4ms
+19:44:13  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.2ms  |  yabridge-host.e/audio 3.9ms
+19:44:13  BitwigStudio/X11RenderComman 8.4ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:13  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.7ms
+19:44:13  yabridge-host.e/audio 5.7ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.9ms
+19:44:13  BitwigStudio/ZWorkerOld#3 51.1ms  |  BitwigStudio/X11RenderComman 6.8ms  |  BitwigStudio/ZWorkerYoung#3 5.9ms  |  yabridge-host.e/audio 5.7ms
+19:44:13  BitwigStudio/ZWorkerOld#3 31.7ms  |  BitwigStudio/ZWorkerOld#5 16.1ms  |  yabridge-host.e/audio 6.4ms  |  BitwigStudio/X11RenderComman 6.0ms
+19:44:13  BitwigStudio/X11RenderComman 6.7ms  |  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.3ms
+19:44:13  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.1ms
+19:44:13  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 5.5ms  |  BitwigStudio/BitwigStudio 3.8ms
+19:44:14  yabridge-host.e/audio 5.6ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.5ms
+19:44:14  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 4.5ms
+19:44:14  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 4.3ms  |  yabridge-host.e/audio 4.0ms  |  BitwigStudio/BitwigStudio 3.7ms
+19:44:14  BitwigStudio/X11RenderComman 7.8ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.1ms  |  BitwigAudioEngi/data-loop.0 3.1ms
+19:44:14  BitwigAudioEngi/data-loop.0 6.2ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.7ms
+19:44:14  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.3ms  |  BitwigAudioEngi/data-loop.0 3.7ms
+19:44:14  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 3.4ms
+19:44:14  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/BitwigStudio 3.4ms
+19:44:14  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.1ms
+19:44:14  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 4.8ms  |  yabridge-host.e/audio 4.7ms
+19:44:15  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.7ms
+19:44:15  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 4.9ms  |  yabridge-host.e/audio 4.7ms
+19:44:15  BitwigStudio/X11RenderComman 6.6ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.1ms
+19:44:15  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 5.1ms  |  BitwigStudio/BitwigStudio 3.9ms
+19:44:15  BitwigStudio/X11RenderComman 7.0ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 3.9ms
+19:44:15  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.6ms
+19:44:15  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.5ms  |  BitwigStudio/X11RenderComman 5.5ms
+19:44:15  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.4ms
+19:44:15  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 4.8ms
+19:44:16  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.3ms
+19:44:16  yabridge-host.e/audio 6.2ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 5.6ms
+19:44:16  yabridge-host.e/audio 6.6ms  |  yabridge-host.e/audio 6.2ms  |  BitwigStudio/X11RenderComman 6.1ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:16  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.3ms
+19:44:16  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms
+19:44:16  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.3ms
+19:44:16  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 5.1ms  |  yabridge-host.e/audio 4.9ms
+19:44:16  BitwigStudio/X11RenderComman 6.7ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.2ms
+19:44:16  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 4.7ms
+19:44:16  BitwigStudio/X11RenderComman 7.5ms  |  yabridge-host.e/audio 6.1ms  |  yabridge-host.e/audio 5.7ms
+19:44:17  BitwigStudio/X11RenderComman 7.1ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.7ms  |  BitwigAudioEngi/data-loop.0 3.0ms
+19:44:17  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.7ms
+19:44:17  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.9ms
+19:44:17  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.0ms
+19:44:17  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 4.5ms  |  yabridge-host.e/audio 3.8ms
+19:44:17  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.1ms
+19:44:17  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 4.8ms
+19:44:17  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.5ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:17  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.1ms
+19:44:18  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.1ms
+19:44:18  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 5.5ms
+19:44:18  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.6ms
+19:44:18  yabridge-host.e/audio 6.2ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/X11RenderComman 5.6ms  |  BitwigStudio/BitwigStudio 3.4ms
+19:44:18  yabridge-host.e/audio 6.4ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.5ms
+19:44:18  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 4.4ms  |  yabridge-host.e/audio 4.0ms
+19:44:18  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.9ms
+19:44:18  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.6ms
+19:44:18  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.2ms
+19:44:18  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.0ms
+19:44:19  yabridge-host.e/audio 6.3ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:19  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/BitwigStudio 3.9ms
+19:44:19  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.2ms
+19:44:19  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 3.6ms
+19:44:19  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 3.8ms
+19:44:19  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.0ms  |  yabridge-host.e/audio 4.0ms
+19:44:19  BitwigStudio/X11RenderComman 6.6ms  |  yabridge-host.e/audio 4.6ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 4.3ms
+19:44:19  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.6ms  |  BitwigStudio/BitwigStudio 3.0ms
+19:44:19  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.8ms  |  BitwigAudioEngi/data-loop.0 3.6ms
+19:44:20  BitwigAudioEngi/data-loop.0 6.7ms  |  BitwigStudio/X11RenderComman 6.6ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.4ms
+19:44:20  yabridge-host.e/audio 5.6ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.0ms  |  BitwigAudioEngi/data-loop.0 3.7ms
+19:44:20  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 4.8ms
+19:44:20  BitwigStudio/X11RenderComman 6.5ms  |  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:20  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 5.0ms
+19:44:20  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/X11RenderComman 5.1ms
+19:44:20  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.8ms  |  BitwigStudio/X11RenderComman 4.7ms
+19:44:20  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.2ms
+19:44:20  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.5ms  |  yabridge-host.e/audio 4.4ms
+19:44:20  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 4.5ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 3.5ms
+19:44:21  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 4.7ms
+19:44:21  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 5.1ms  |  yabridge-host.e/audio 4.7ms
+19:44:21  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.3ms  |  BitwigStudio/BitwigStudio 4.8ms
+19:44:21  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/X11RenderComman 5.6ms  |  BitwigAudioEngi/data-loop.0 4.3ms
+19:44:21  yabridge-host.e/audio 5.0ms  |  BitwigStudio/X11RenderComman 4.7ms  |  yabridge-host.e/audio 4.7ms  |  BitwigAudioEngi/data-loop.0 4.1ms
+19:44:21  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 3.7ms
+19:44:21  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.7ms  |  BitwigStudio/X11RenderComman 4.6ms  |  BitwigStudio/BitwigStudio 3.0ms
+19:44:21  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.5ms  |  yabridge-host.e/audio 4.1ms
+19:44:21  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.5ms
+19:44:21  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 4.8ms
+19:44:22  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 4.8ms
+19:44:22  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.5ms
+19:44:22  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.0ms
+19:44:22  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/X11RenderComman 4.7ms
+19:44:22  yabridge-host.e/audio 6.0ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.2ms
+19:44:22  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/X11RenderComman 4.4ms
+19:44:22  yabridge-host.e/audio 6.2ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 5.3ms  |  BitwigStudio/BitwigStudio 3.0ms
+19:44:22  BitwigStudio/X11RenderComman 6.8ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.5ms
+19:44:22  yabridge-host.e/audio 5.1ms  |  BitwigStudio/X11RenderComman 4.9ms  |  yabridge-host.e/audio 4.7ms
+19:44:23  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.2ms
+19:44:23  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.8ms
+19:44:23  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 5.2ms
+19:44:23  yabridge-host.e/audio 7.5ms  |  yabridge-host.e/audio 7.4ms  |  BitwigStudio/X11RenderComman 5.5ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:23  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 4.9ms
+19:44:23  yabridge-host.e/audio 6.1ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/X11RenderComman 5.4ms
+19:44:23  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.2ms
+19:44:23  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/X11RenderComman 4.8ms
+19:44:23  BitwigAudioEngi/data-loop.0 5.6ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.1ms
+19:44:23  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 4.8ms  |  BitwigAudioEngi/data-loop.0 4.8ms  |  yabridge-host.e/audio 4.2ms
+19:44:24  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.8ms  |  BitwigAudioEngi/data-loop.0 4.3ms
+19:44:24  BitwigStudio/X11RenderComman 5.7ms  |  BitwigAudioEngi/data-loop.0 4.7ms  |  yabridge-host.e/audio 4.6ms  |  yabridge-host.e/audio 4.2ms
+19:44:24  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 5.4ms  |  BitwigAudioEngi/data-loop.0 5.2ms
+19:44:24  BitwigAudioEngi/data-loop.0 6.3ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:24  BitwigAudioEngi/data-loop.0 8.6ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/X11RenderComman 4.7ms
+19:44:24  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 5.0ms  |  BitwigAudioEngi/data-loop.0 4.8ms
+19:44:24  BitwigAudioEngi/data-loop.0 5.5ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/X11RenderComman 4.5ms
+19:44:24  yabridge-host.e/audio 5.8ms  |  yabridge-host.e/audio 5.8ms  |  BitwigAudioEngi/data-loop.0 5.2ms  |  BitwigStudio/X11RenderComman 4.9ms
+19:44:24  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/X11RenderComman 4.5ms  |  BitwigAudioEngi/data-loop.0 4.5ms
+19:44:25  BitwigAudioEngi/data-loop.0 5.0ms  |  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.8ms
+19:44:25  BitwigAudioEngi/data-loop.0 5.3ms  |  BitwigStudio/X11RenderComman 4.5ms  |  yabridge-host.e/audio 4.3ms  |  yabridge-host.e/audio 4.3ms
+19:44:25  BitwigAudioEngi/data-loop.0 6.1ms  |  BitwigStudio/X11RenderComman 4.7ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.6ms
+19:44:25  BitwigAudioEngi/data-loop.0 6.5ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 4.7ms
+19:44:25  BitwigAudioEngi/data-loop.0 8.2ms  |  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.2ms
+19:44:25  BitwigStudio/X11RenderComman 5.5ms  |  BitwigAudioEngi/data-loop.0 5.3ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.6ms
+19:44:25  yabridge-host.e/audio 6.1ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.6ms
+19:44:25  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.1ms  |  BitwigAudioEngi/data-loop.0 3.1ms
+19:44:25  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms  |  BitwigAudioEngi/data-loop.0 4.7ms
+19:44:25  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.0ms  |  BitwigAudioEngi/data-loop.0 3.2ms
+19:44:26  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 4.4ms  |  yabridge-host.e/audio 4.4ms
+19:44:26  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 4.4ms  |  yabridge-host.e/audio 4.2ms
+19:44:26  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.3ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:26  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.3ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:26  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 3.5ms
+19:44:26  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.0ms
+19:44:26  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 3.4ms
+19:44:26  yabridge-host.e/audio 5.7ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.6ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:26  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 6.1ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:27  yabridge-host.e/audio 7.9ms  |  yabridge-host.e/audio 7.8ms  |  BitwigStudio/X11RenderComman 5.5ms  |  BitwigStudio/BitwigStudio 3.7ms
+19:44:27  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 4.1ms
+19:44:27  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.6ms
+19:44:27  BitwigStudio/X11RenderComman 8.6ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.6ms  |  BitwigAudioEngi/data-loop.0 3.0ms
+19:44:27  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.5ms
+19:44:27  yabridge-host.e/audio 5.6ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.1ms
+19:44:27  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.0ms
+19:44:27  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 4.7ms
+19:44:27  yabridge-host.e/audio 6.1ms  |  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 5.3ms
+19:44:27  BitwigStudio/X11RenderComman 6.7ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.0ms
+19:44:28  BitwigStudio/X11RenderComman 6.0ms  |  BitwigStudio/BitwigStudio 5.3ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 4.5ms
+19:44:28  BitwigStudio/BitwigStudio 7.0ms  |  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.1ms
+19:44:28  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 4.2ms  |  yabridge-host.e/audio 4.0ms
+19:44:28  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 4.6ms  |  yabridge-host.e/audio 4.3ms  |  BitwigStudio/BitwigStudio 3.3ms
+19:44:28  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.2ms  |  BitwigStudio/BitwigStudio 3.5ms
+19:44:28  BitwigStudio/X11RenderComman 6.6ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 3.3ms
+19:44:28  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.4ms
+19:44:28  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.8ms  |  BitwigAudioEngi/data-loop.0 3.9ms
+19:44:28  BitwigStudio/X11RenderComman 6.8ms  |  BitwigAudioEngi/data-loop.0 6.4ms  |  yabridge-host.e/audio 5.9ms  |  yabridge-host.e/audio 5.9ms
+19:44:29  BitwigAudioEngi/data-loop.0 6.6ms  |  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.4ms  |  yabridge-host.e/audio 5.1ms
+19:44:29  yabridge-host.e/audio 8.5ms  |  BitwigStudio/X11RenderComman 6.4ms  |  BitwigAudioEngi/data-loop.0 5.6ms  |  yabridge-host.e/audio 5.1ms
+19:44:29  yabridge-host.e/audio 9.2ms  |  BitwigStudio/X11RenderComman 6.5ms  |  yabridge-host.e/audio 6.2ms  |  BitwigAudioEngi/data-loop.0 4.8ms
+19:44:29  yabridge-host.e/audio 7.8ms  |  BitwigStudio/X11RenderComman 6.3ms  |  BitwigAudioEngi/data-loop.0 5.6ms  |  yabridge-host.e/audio 5.5ms
+19:44:29  yabridge-host.e/audio 6.9ms  |  BitwigAudioEngi/data-loop.0 6.5ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.9ms
+19:44:29  BitwigStudio/X11RenderComman 6.4ms  |  BitwigAudioEngi/data-loop.0 6.3ms  |  yabridge-host.e/audio 6.1ms  |  yabridge-host.e/audio 4.3ms
+19:44:29  yabridge-host.e/audio 7.7ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 4.8ms  |  BitwigAudioEngi/data-loop.0 4.5ms
+19:44:29  BitwigStudio/ZWorkerOld#2 19.3ms  |  yabridge-host.e/audio 8.8ms  |  BitwigStudio/ZWorkerYoung#4 6.2ms  |  BitwigStudio/X11RenderComman 5.8ms
+19:44:29  BitwigStudio/ZWorkerOld#2 61.8ms  |  BitwigStudio/ZWorkerOld#6 16.1ms  |  BitwigStudio/X11RenderComman 8.4ms  |  yabridge-host.e/audio 8.0ms
+19:44:29  yabridge-host.e/audio 8.6ms  |  yabridge-host.e/audio 8.1ms  |  BitwigStudio/X11RenderComman 6.2ms  |  BitwigAudioEngi/data-loop.0 5.6ms
+19:44:30  yabridge-host.e/audio 10.7ms  |  yabridge-host.e/audio 8.9ms  |  BitwigStudio/X11RenderComman 5.4ms  |  BitwigAudioEngi/data-loop.0 4.7ms
+19:44:30  yabridge-host.e/audio 8.5ms  |  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 5.9ms  |  BitwigAudioEngi/data-loop.0 5.0ms
+19:44:30  yabridge-host.e/audio 8.1ms  |  yabridge-host.e/audio 8.0ms  |  BitwigStudio/X11RenderComman 5.9ms  |  BitwigAudioEngi/data-loop.0 4.1ms
+19:44:30  yabridge-host.e/audio 7.7ms  |  yabridge-host.e/audio 6.8ms  |  BitwigStudio/X11RenderComman 5.6ms
+19:44:30  yabridge-host.e/audio 7.0ms  |  yabridge-host.e/audio 6.8ms  |  BitwigStudio/X11RenderComman 5.8ms
+19:44:30  yabridge-host.e/audio 6.9ms  |  yabridge-host.e/audio 6.7ms  |  BitwigStudio/X11RenderComman 5.6ms
+19:44:30  yabridge-host.e/audio 6.9ms  |  yabridge-host.e/audio 6.8ms  |  BitwigStudio/X11RenderComman 5.1ms
+19:44:30  yabridge-host.e/audio 11.7ms  |  yabridge-host.e/audio 8.3ms  |  BitwigStudio/X11RenderComman 5.7ms
+19:44:30  yabridge-host.e/audio 11.6ms  |  yabridge-host.e/audio 8.2ms  |  BitwigStudio/X11RenderComman 4.9ms
+19:44:30  yabridge-host.e/audio 12.1ms  |  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 6.0ms
+19:44:31  yabridge-host.e/audio 9.3ms  |  yabridge-host.e/audio 8.5ms  |  BitwigStudio/X11RenderComman 5.4ms
+19:44:31  yabridge-host.e/audio 7.1ms  |  yabridge-host.e/audio 6.9ms  |  BitwigStudio/X11RenderComman 5.6ms  |  BitwigPluginHos/bitwig-remote-p 3.8ms
+19:44:31  yabridge-host.e/audio 9.7ms  |  yabridge-host.e/audio 8.3ms  |  BitwigStudio/X11RenderComman 6.3ms  |  BitwigStudio/BitwigStudio 4.9ms
+19:44:31  yabridge-host.e/audio 8.9ms  |  yabridge-host.e/audio 7.3ms  |  BitwigStudio/X11RenderComman 5.3ms  |  BitwigStudio/BitwigStudio 4.2ms
+19:44:31  yabridge-host.e/audio 9.5ms  |  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 5.9ms
+19:44:31  yabridge-host.e/audio 6.8ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 4.7ms  |  BitwigStudio/BitwigStudio 3.3ms
+19:44:31  yabridge-host.e/audio 5.8ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.6ms
+19:44:31  yabridge-host.e/audio 8.0ms  |  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 3.3ms
+19:44:31  yabridge-host.e/audio 8.5ms  |  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.2ms
+19:44:32  yabridge-host.e/audio 8.1ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:32  yabridge-host.e/audio 8.4ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 5.1ms  |  BitwigStudio/BitwigStudio 3.4ms
+19:44:32  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/BitwigStudio 3.6ms
+19:44:32  yabridge-host.e/audio 7.7ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.2ms
+19:44:32  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.2ms
+19:44:32  yabridge-host.e/audio 6.6ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 4.4ms  |  BitwigStudio/BitwigStudio 3.5ms
+19:44:32  yabridge-host.e/audio 6.8ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.0ms
+19:44:32  yabridge-host.e/audio 6.6ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.2ms
+19:44:32  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 4.5ms
+19:44:32  yabridge-host.e/audio 9.3ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.0ms
+19:44:33  yabridge-host.e/audio 9.5ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.0ms
+19:44:33  yabridge-host.e/audio 8.5ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 5.3ms
+19:44:33  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 6.5ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/BitwigStudio 3.3ms
+19:44:33  yabridge-host.e/audio 8.0ms  |  BitwigStudio/X11RenderComman 4.8ms  |  yabridge-host.e/audio 4.7ms
+19:44:33  yabridge-host.e/audio 8.2ms  |  BitwigStudio/X11RenderComman 7.1ms  |  yabridge-host.e/audio 5.6ms
+19:44:33  yabridge-host.e/audio 8.0ms  |  BitwigStudio/X11RenderComman 6.7ms  |  yabridge-host.e/audio 5.5ms
+19:44:33  yabridge-host.e/audio 8.5ms  |  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.5ms
+19:44:33  yabridge-host.e/audio 7.4ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 4.8ms
+19:44:33  BitwigStudio/X11RenderComman 6.8ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 4.0ms
+19:44:34  yabridge-host.e/audio 8.6ms  |  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 4.9ms
+19:44:34  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 6.6ms  |  yabridge-host.e/audio 5.2ms
+19:44:34  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.0ms
+19:44:34  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/BitwigStudio 3.5ms
+19:44:34  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:34  BitwigStudio/X11RenderComman 6.4ms  |  yabridge-host.e/audio 6.0ms  |  yabridge-host.e/audio 5.7ms  |  BitwigStudio/BitwigStudio 4.2ms
+19:44:34  BitwigStudio/X11RenderComman 6.8ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 4.2ms
+19:44:34  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.6ms  |  BitwigStudio/BitwigStudio 4.6ms
+19:44:34  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.0ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:34  BitwigStudio/X11RenderComman 4.8ms  |  yabridge-host.e/audio 3.9ms  |  yabridge-host.e/audio 3.7ms
+19:44:35  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.0ms
+19:44:35  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.3ms
+19:44:35  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.3ms  |  BitwigAudioEngi/data-loop.0 5.0ms
+19:44:35  BitwigStudio/X11RenderComman 6.2ms  |  yabridge-host.e/audio 5.9ms  |  BitwigAudioEngi/data-loop.0 5.6ms  |  yabridge-host.e/audio 5.2ms
+19:44:35  BitwigStudio/X11RenderComman 7.2ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.4ms  |  BitwigAudioEngi/data-loop.0 3.7ms
+19:44:35  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.8ms
+19:44:35  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/BitwigStudio 3.7ms
+19:44:35  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.3ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:35  BitwigAudioEngi/data-loop.0 7.8ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.3ms
+19:44:35  BitwigAudioEngi/data-loop.0 6.9ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.3ms
+19:44:36  BitwigAudioEngi/data-loop.0 8.0ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 4.6ms  |  yabridge-host.e/audio 4.0ms
+19:44:36  BitwigAudioEngi/data-loop.0 6.2ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.8ms
+19:44:36  BitwigStudio/X11RenderComman 7.3ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/BitwigStudio 3.9ms
+19:44:36  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.6ms
+19:44:36  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:36  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.0ms
+19:44:36  BitwigStudio/X11RenderComman 6.8ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.2ms
+19:44:36  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 3.6ms
+19:44:36  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.9ms  |  yabridge-host.e/audio 4.7ms
+19:44:37  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 4.4ms  |  yabridge-host.e/audio 4.0ms
+19:44:37  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.3ms  |  yabridge-host.e/audio 3.9ms
+19:44:37  BitwigStudio/X11RenderComman 7.9ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 4.9ms
+19:44:37  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 4.7ms  |  yabridge-host.e/audio 4.5ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:37  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 4.7ms  |  BitwigStudio/BitwigStudio 3.6ms
+19:44:37  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 3.8ms
+19:44:37  BitwigStudio/X11RenderComman 6.5ms  |  yabridge-host.e/audio 5.1ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/BitwigStudio 3.6ms
+19:44:37  yabridge-host.e/audio 5.7ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 5.0ms  |  BitwigStudio/BitwigStudio 3.3ms
+19:44:37  BitwigStudio/X11RenderComman 6.1ms  |  BitwigAudioEngi/data-loop.0 5.7ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.2ms
+19:44:37  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.7ms  |  yabridge-host.e/audio 5.3ms  |  BitwigAudioEngi/data-loop.0 3.8ms
+19:44:38  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.6ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:38  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 4.5ms  |  yabridge-host.e/audio 4.4ms
+19:44:38  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 4.8ms  |  yabridge-host.e/audio 4.8ms
+19:44:38  BitwigStudio/X11RenderComman 6.3ms  |  yabridge-host.e/audio 5.2ms  |  yabridge-host.e/audio 4.6ms
+19:44:38  yabridge-host.e/audio 5.6ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 4.9ms
+19:44:38  BitwigStudio/X11RenderComman 6.0ms  |  yabridge-host.e/audio 5.5ms  |  yabridge-host.e/audio 5.4ms
+19:44:38  yabridge-host.e/audio 5.6ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.2ms
+19:44:38  BitwigStudio/X11RenderComman 8.6ms  |  yabridge-host.e/audio 6.0ms  |  yabridge-host.e/audio 6.0ms
+19:44:38  yabridge-host.e/audio 6.6ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.3ms
+19:44:39  yabridge-host.e/audio 7.3ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 4.7ms
+19:44:39  yabridge-host.e/audio 7.1ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 4.7ms
+19:44:39  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 4.6ms
+19:44:39  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.6ms
+19:44:39  yabridge-host.e/audio 8.4ms  |  yabridge-host.e/audio 8.3ms  |  BitwigStudio/X11RenderComman 5.8ms
+19:44:39  yabridge-host.e/audio 8.1ms  |  yabridge-host.e/audio 7.2ms  |  BitwigStudio/X11RenderComman 7.1ms
+19:44:39  yabridge-host.e/audio 9.0ms  |  yabridge-host.e/audio 9.0ms  |  BitwigStudio/X11RenderComman 6.2ms
+19:44:39  yabridge-host.e/audio 8.5ms  |  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 6.1ms
+19:44:39  yabridge-host.e/audio 9.5ms  |  yabridge-host.e/audio 8.0ms  |  BitwigStudio/X11RenderComman 5.2ms
+19:44:39  yabridge-host.e/audio 12.0ms  |  yabridge-host.e/audio 11.8ms  |  BitwigStudio/X11RenderComman 4.7ms
+19:44:40  yabridge-host.e/audio 12.0ms  |  yabridge-host.e/audio 11.7ms  |  BitwigStudio/X11RenderComman 5.3ms
+19:44:40  yabridge-host.e/audio 13.1ms  |  yabridge-host.e/audio 12.4ms  |  BitwigStudio/X11RenderComman 4.7ms
+19:44:40  yabridge-host.e/audio 9.9ms  |  yabridge-host.e/audio 8.5ms  |  BitwigStudio/X11RenderComman 6.0ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:40  yabridge-host.e/audio 10.0ms  |  yabridge-host.e/audio 7.5ms  |  BitwigStudio/X11RenderComman 5.4ms
+19:44:40  yabridge-host.e/audio 9.9ms  |  yabridge-host.e/audio 7.4ms  |  BitwigStudio/X11RenderComman 5.7ms
+19:44:40  yabridge-host.e/audio 7.6ms  |  yabridge-host.e/audio 7.0ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:40  yabridge-host.e/audio 8.2ms  |  yabridge-host.e/audio 7.4ms  |  BitwigStudio/X11RenderComman 5.9ms
+19:44:40  yabridge-host.e/audio 8.2ms  |  yabridge-host.e/audio 6.9ms  |  BitwigStudio/X11RenderComman 5.1ms
+19:44:40  yabridge-host.e/audio 8.2ms  |  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 6.4ms
+19:44:40  yabridge-host.e/audio 10.5ms  |  yabridge-host.e/audio 8.7ms  |  BitwigAudioEngi/data-loop.0 4.6ms  |  BitwigStudio/X11RenderComman 4.5ms
+19:44:41  yabridge-host.e/audio 7.9ms  |  yabridge-host.e/audio 6.8ms  |  BitwigAudioEngi/data-loop.0 5.6ms  |  BitwigStudio/X11RenderComman 5.3ms
+19:44:41  yabridge-host.e/audio 7.6ms  |  yabridge-host.e/audio 7.2ms  |  BitwigStudio/X11RenderComman 5.2ms  |  BitwigAudioEngi/data-loop.0 4.6ms
+19:44:41  BitwigStudio/X11RenderComman 8.4ms  |  yabridge-host.e/audio 7.2ms  |  yabridge-host.e/audio 7.0ms  |  BitwigAudioEngi/data-loop.0 4.9ms
+19:44:41  yabridge-host.e/audio 8.1ms  |  yabridge-host.e/audio 6.3ms  |  BitwigStudio/X11RenderComman 6.2ms  |  BitwigAudioEngi/data-loop.0 5.6ms
+19:44:41  yabridge-host.e/audio 7.5ms  |  yabridge-host.e/audio 6.8ms  |  BitwigAudioEngi/data-loop.0 5.5ms  |  BitwigStudio/X11RenderComman 5.3ms
+19:44:41  yabridge-host.e/audio 8.5ms  |  yabridge-host.e/audio 7.4ms  |  BitwigAudioEngi/data-loop.0 5.0ms  |  BitwigStudio/X11RenderComman 4.6ms
+19:44:41  yabridge-host.e/audio 9.1ms  |  yabridge-host.e/audio 7.8ms  |  BitwigAudioEngi/data-loop.0 5.8ms  |  BitwigStudio/X11RenderComman 5.4ms
+19:44:41  yabridge-host.e/audio 10.9ms  |  yabridge-host.e/audio 9.4ms  |  BitwigAudioEngi/data-loop.0 7.1ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:41  yabridge-host.e/audio 10.1ms  |  yabridge-host.e/audio 9.4ms  |  BitwigAudioEngi/data-loop.0 7.5ms  |  BitwigStudio/X11RenderComman 4.8ms
+19:44:42  yabridge-host.e/audio 11.1ms  |  yabridge-host.e/audio 9.1ms  |  BitwigAudioEngi/data-loop.0 7.1ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:42  yabridge-host.e/audio 9.8ms  |  yabridge-host.e/audio 8.4ms  |  BitwigAudioEngi/data-loop.0 5.9ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:42  yabridge-host.e/audio 13.1ms  |  yabridge-host.e/audio 8.5ms  |  BitwigStudio/X11RenderComman 5.9ms  |  BitwigPluginHos/bitwig-remote-p 4.4ms
+19:44:42  yabridge-host.e/audio 13.2ms  |  yabridge-host.e/audio 8.8ms  |  BitwigStudio/X11RenderComman 6.3ms  |  BitwigPluginHos/bitwig-remote-p 4.7ms
+19:44:42  yabridge-host.e/audio 10.8ms  |  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 5.7ms  |  BitwigPluginHos/bitwig-remote-p 3.9ms
+19:44:42  yabridge-host.e/audio 10.2ms  |  BitwigStudio/X11RenderComman 7.1ms  |  yabridge-host.e/audio 7.1ms  |  BitwigPluginHos/bitwig-remote-p 5.3ms
+19:44:42  yabridge-host.e/audio 8.4ms  |  yabridge-host.e/audio 7.0ms  |  BitwigAudioEngi/data-loop.0 5.8ms  |  BitwigStudio/X11RenderComman 5.5ms
+19:44:42  yabridge-host.e/audio 7.7ms  |  yabridge-host.e/audio 7.5ms  |  BitwigStudio/X11RenderComman 6.1ms  |  BitwigAudioEngi/data-loop.0 5.5ms
+19:44:42  yabridge-host.e/audio 9.2ms  |  yabridge-host.e/audio 8.5ms  |  BitwigStudio/X11RenderComman 5.7ms  |  BitwigAudioEngi/data-loop.0 4.0ms
+19:44:42  yabridge-host.e/audio 8.5ms  |  yabridge-host.e/audio 8.1ms  |  BitwigStudio/X11RenderComman 5.9ms
+19:44:43  yabridge-host.e/audio 9.6ms  |  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 5.2ms
+19:44:43  yabridge-host.e/audio 9.8ms  |  yabridge-host.e/audio 9.4ms  |  BitwigStudio/X11RenderComman 6.6ms  |  BitwigStudio/BitwigStudio 3.2ms
+19:44:43  yabridge-host.e/audio 9.3ms  |  yabridge-host.e/audio 6.9ms  |  BitwigStudio/X11RenderComman 6.3ms
+19:44:43  yabridge-host.e/audio 10.5ms  |  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 6.2ms
+19:44:43  yabridge-host.e/audio 9.3ms  |  yabridge-host.e/audio 7.9ms  |  BitwigStudio/X11RenderComman 5.7ms
+19:44:43  yabridge-host.e/audio 11.4ms  |  yabridge-host.e/audio 6.5ms  |  BitwigStudio/X11RenderComman 5.8ms
+19:44:43  yabridge-host.e/audio 10.8ms  |  yabridge-host.e/audio 6.6ms  |  BitwigStudio/X11RenderComman 5.3ms
+19:44:43  yabridge-host.e/audio 9.8ms  |  yabridge-host.e/audio 6.4ms  |  BitwigStudio/X11RenderComman 5.6ms
+19:44:43  yabridge-host.e/audio 10.5ms  |  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 5.9ms
+19:44:44  yabridge-host.e/audio 10.6ms  |  yabridge-host.e/audio 8.2ms  |  BitwigStudio/X11RenderComman 5.9ms
+19:44:44  yabridge-host.e/audio 12.5ms  |  yabridge-host.e/audio 7.4ms  |  BitwigStudio/X11RenderComman 6.4ms
+19:44:44  yabridge-host.e/audio 12.6ms  |  yabridge-host.e/audio 8.0ms  |  BitwigStudio/X11RenderComman 5.7ms  |  BitwigStudio/BitwigStudio 3.1ms
+19:44:44  yabridge-host.e/audio 10.7ms  |  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 5.6ms
+19:44:44  yabridge-host.e/audio 9.7ms  |  yabridge-host.e/audio 8.8ms  |  BitwigStudio/X11RenderComman 6.2ms  |  BitwigAudioEngi/data-loop.0 3.6ms
+19:44:44  yabridge-host.e/audio 11.7ms  |  yabridge-host.e/audio 9.0ms  |  BitwigStudio/X11RenderComman 5.5ms  |  BitwigAudioEngi/data-loop.0 4.2ms
+19:44:44  yabridge-host.e/audio 12.0ms  |  yabridge-host.e/audio 6.8ms  |  BitwigStudio/X11RenderComman 5.4ms  |  BitwigAudioEngi/data-loop.0 4.5ms
+19:44:44  yabridge-host.e/audio 8.5ms  |  yabridge-host.e/audio 7.0ms  |  BitwigStudio/X11RenderComman 5.2ms  |  BitwigAudioEngi/data-loop.0 4.4ms
+19:44:44  yabridge-host.e/audio 7.9ms  |  BitwigAudioEngi/data-loop.0 7.3ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.7ms
+19:44:44  yabridge-host.e/audio 8.4ms  |  yabridge-host.e/audio 8.2ms  |  BitwigAudioEngi/data-loop.0 6.8ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:45  yabridge-host.e/audio 8.5ms  |  yabridge-host.e/audio 7.8ms  |  BitwigAudioEngi/data-loop.0 6.3ms  |  BitwigStudio/X11RenderComman 6.2ms
+19:44:45  yabridge-host.e/audio 7.2ms  |  yabridge-host.e/audio 6.2ms  |  BitwigAudioEngi/data-loop.0 5.6ms  |  BitwigStudio/X11RenderComman 5.5ms
+19:44:45  yabridge-host.e/audio 9.4ms  |  BitwigAudioEngi/data-loop.0 7.4ms  |  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 6.0ms
+19:44:45  yabridge-host.e/audio 9.8ms  |  BitwigAudioEngi/data-loop.0 6.7ms  |  yabridge-host.e/audio 5.9ms  |  BitwigStudio/X11RenderComman 5.7ms
+19:44:45  yabridge-host.e/audio 10.8ms  |  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 5.3ms  |  BitwigAudioEngi/data-loop.0 4.7ms
+19:44:45  yabridge-host.e/audio 10.2ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.1ms  |  BitwigAudioEngi/data-loop.0 4.8ms
+19:44:45  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 4.7ms  |  BitwigAudioEngi/data-loop.0 4.4ms
+19:44:45  yabridge-host.e/audio 7.1ms  |  BitwigAudioEngi/data-loop.0 6.3ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.1ms
+19:44:45  yabridge-host.e/audio 6.2ms  |  BitwigStudio/X11RenderComman 5.8ms  |  yabridge-host.e/audio 4.6ms  |  BitwigAudioEngi/data-loop.0 4.5ms
+19:44:46  yabridge-host.e/audio 9.7ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 4.7ms  |  BitwigAudioEngi/data-loop.0 4.5ms
+19:44:46  yabridge-host.e/audio 10.3ms  |  BitwigAudioEngi/data-loop.0 5.3ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.2ms
+19:44:46  yabridge-host.e/audio 9.1ms  |  BitwigStudio/X11RenderComman 5.4ms  |  yabridge-host.e/audio 5.0ms  |  BitwigAudioEngi/data-loop.0 4.2ms
+19:44:46  BitwigStudio/ZWorkerOld#1 25.5ms  |  yabridge-host.e/audio 10.0ms  |  BitwigStudio/X11RenderComman 7.2ms  |  BitwigStudio/ZWorkerYoung#1 6.2ms
+19:44:46  BitwigStudio/ZWorkerOld#1 56.7ms  |  BitwigStudio/ZWorkerOld#3 16.0ms  |  yabridge-host.e/audio 7.6ms  |  BitwigStudio/X11RenderComman 6.9ms
+19:44:46  yabridge-host.e/audio 8.1ms  |  BitwigStudio/X11RenderComman 5.0ms  |  yabridge-host.e/audio 4.8ms  |  BitwigAudioEngi/data-loop.0 4.6ms
+19:44:46  yabridge-host.e/audio 8.9ms  |  BitwigStudio/X11RenderComman 6.1ms  |  yabridge-host.e/audio 5.9ms  |  BitwigAudioEngi/data-loop.0 4.3ms
+19:44:46  yabridge-host.e/audio 7.8ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 5.1ms  |  BitwigAudioEngi/data-loop.0 4.5ms
+19:44:46  yabridge-host.e/audio 7.8ms  |  BitwigStudio/X11RenderComman 5.5ms  |  yabridge-host.e/audio 5.3ms  |  BitwigAudioEngi/data-loop.0 4.5ms
+19:44:46  yabridge-host.e/audio 6.3ms  |  BitwigStudio/X11RenderComman 5.2ms  |  BitwigAudioEngi/data-loop.0 4.8ms  |  yabridge-host.e/audio 4.4ms
+19:44:47  yabridge-host.e/audio 8.4ms  |  BitwigStudio/X11RenderComman 5.3ms  |  BitwigAudioEngi/data-loop.0 4.5ms  |  yabridge-host.e/audio 4.4ms
+19:44:47  yabridge-host.e/audio 9.5ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/X11RenderComman 5.1ms  |  BitwigAudioEngi/data-loop.0 4.8ms
+19:44:47  yabridge-host.e/audio 8.9ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/X11RenderComman 5.3ms  |  BitwigAudioEngi/data-loop.0 4.5ms
+19:44:47  yabridge-host.e/audio 8.8ms  |  BitwigStudio/X11RenderComman 5.0ms  |  BitwigAudioEngi/data-loop.0 4.7ms  |  yabridge-host.e/audio 4.7ms
+19:44:47  yabridge-host.e/audio 12.3ms  |  yabridge-host.e/audio 6.0ms  |  BitwigAudioEngi/data-loop.0 4.6ms  |  BitwigStudio/X11RenderComman 4.5ms
+19:44:47  yabridge-host.e/audio 9.9ms  |  BitwigStudio/X11RenderComman 5.1ms  |  yabridge-host.e/audio 5.1ms  |  BitwigAudioEngi/data-loop.0 4.4ms
+19:44:47  yabridge-host.e/audio 10.2ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 4.9ms  |  BitwigAudioEngi/data-loop.0 4.7ms
+19:44:47  BitwigAudioEngi/data-loop.0 8.1ms  |  yabridge-host.e/audio 6.4ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.0ms
+19:44:47  BitwigAudioEngi/data-loop.0 9.2ms  |  yabridge-host.e/audio 6.9ms  |  BitwigStudio/X11RenderComman 6.7ms  |  yabridge-host.e/audio 4.2ms
+19:44:47  BitwigAudioEngi/data-loop.0 9.5ms  |  yabridge-host.e/audio 6.8ms  |  yabridge-host.e/audio 4.7ms  |  BitwigStudio/X11RenderComman 4.6ms
+19:44:48  yabridge-host.e/audio 8.0ms  |  BitwigAudioEngi/data-loop.0 6.1ms  |  BitwigStudio/X11RenderComman 5.3ms  |  yabridge-host.e/audio 4.6ms
+19:44:48  yabridge-host.e/audio 10.2ms  |  BitwigAudioEngi/data-loop.0 7.3ms  |  yabridge-host.e/audio 4.9ms  |  BitwigStudio/X11RenderComman 4.4ms
+19:44:48  BitwigAudioEngi/data-loop.0 11.1ms  |  yabridge-host.e/audio 9.2ms  |  BitwigStudio/X11RenderComman 5.9ms  |  yabridge-host.e/audio 5.5ms
+19:44:48  BitwigAudioEngi/data-loop.0 10.0ms  |  yabridge-host.e/audio 8.2ms  |  yabridge-host.e/audio 5.1ms  |  BitwigStudio/X11RenderComman 4.8ms
+19:44:48  BitwigAudioEngi/data-loop.0 9.7ms  |  yabridge-host.e/audio 7.9ms  |  yabridge-host.e/audio 5.2ms  |  BitwigStudio/X11RenderComman 4.8ms
+19:44:48  BitwigAudioEngi/data-loop.0 7.5ms  |  yabridge-host.e/audio 7.1ms  |  yabridge-host.e/audio 5.4ms  |  BitwigStudio/X11RenderComman 4.5ms
+19:44:48  BitwigAudioEngi/data-loop.0 8.7ms  |  yabridge-host.e/audio 8.1ms  |  BitwigStudio/X11RenderComman 5.2ms  |  yabridge-host.e/audio 5.0ms
+19:44:48  yabridge-host.e/audio 9.5ms  |  BitwigAudioEngi/data-loop.0 6.4ms  |  yabridge-host.e/audio 6.1ms  |  BitwigStudio/X11RenderComman 5.2ms
+19:44:48  BitwigAudioEngi/data-loop.0 10.3ms  |  yabridge-host.e/audio 7.8ms  |  yabridge-host.e/audio 5.0ms  |  BitwigStudio/X11RenderComman 4.9ms
+19:44:49  BitwigAudioEngi/data-loop.0 10.6ms  |  yabridge-host.e/audio 7.7ms  |  yabridge-host.e/audio 5.3ms  |  BitwigStudio/X11RenderComman 5.0ms
+19:44:49  yabridge-host.e/audio 5.3ms  |  BitwigStudio/X11RenderComman 5.2ms  |  BitwigAudioEngi/data-loop.0 5.1ms  |  yabridge-host.e/audio 4.5ms
+19:44:49  yabridge-host.e/audio 7.3ms  |  BitwigStudio/X11RenderComman 5.4ms  |  BitwigAudioEngi/data-loop.0 4.6ms  |  yabridge-host.e/audio 4.6ms
+19:44:49  yabridge-host.e/audio 7.4ms  |  BitwigStudio/X11RenderComman 5.6ms  |  yabridge-host.e/audio 5.1ms  |  BitwigAudioEngi/data-loop.0 4.9ms
+
+=== bursts per thread ===
+   1150  yabridge-host.e/audio
+    575  BitwigStudio/X11RenderComman
+    239  BitwigStudio/BitwigStudio
+    179  BitwigAudioEngi/data-loop.0
+     22  BitwigPluginHos/bitwig-remote-p
+      4  BitwigStudio/ZWorkerOld#1
+      4  BitwigStudio/ZWorkerOld#2
+      4  BitwigStudio/ZWorkerOld#6
+      4  BitwigStudio/ZWorkerOld#3
+      3  BitwigStudio/ZWorkerOld#4
+      2  BitwigStudio/ZWorkerOld#7
+      2  BitwigStudio/ZWorkerOld#5
+      1  BitwigStudio/ZWorkerYoung#2
+      1  BitwigStudio/ZWorkerYoung#0
+      1  BitwigStudio/C2 CompilerThre

@@ -1,0 +1,40 @@
+2026-08-30. Session started via the ~/.local/bin symlink, so SCRIPT_DIR resolved to the
+link's directory and tools/steer-threads.sh was never launched (fixed in ce750d1).
+Measured before and after starting the steward by hand, same session, same project, same
+playhead, nvme scheduler held at 'none' throughout.
+
+--- placement, before ---
+  non-RT  cpus=0-15       355
+  RT      cpus=0-15       121
+  RT threads by rtprio: {83: 1, 85: 120}
+  wineserver nice 0
+  steer-threads.sh --dry-run: 121 audio -> 0-15, 407 other -> 16-31, 121 already correct
+  Bitwig DSP panel: Load AVG 0.571 ms, Load MAX 16.258 ms, deadline 5.333 ms, jitter 0.96%
+
+--- xruns, 300s, unsteered ---
+  Bitwig       (AUDIBLE)            20 -> 31       +11   0.037/s
+  RME playback (AUDIBLE)             8 -> 10        +2   0.007/s
+  RME capture  (driver at the time) 5729 -> 11240 +5511  18.370/s
+
+--- interval between the two windows, still unsteered ---
+  Bitwig       31 -> 45   +14
+
+--- placement, after `steer-threads.sh --watch 15` ---
+  steered 407 threads (121 audio on 0-15, 407 other on 16-31, 121 unchanged)
+  non-RT  cpus=16-31      355
+  RT      cpus=0-15       121
+  wineserver nice -10
+
+--- xruns, 300s, steward active ---
+  Bitwig       (AUDIBLE)            45 -> 45        +0   0.000/s
+  RME playback (AUDIBLE)            15 -> 15        +0   0.000/s
+  RME capture  (no longer driver) 15464 -> 15464    +0   0.000/s
+
+  Graph confirmed live during the window: Bitwig node R, QUANT 256, RATE 48000,
+  BUSY 412-595us/cycle, B/Q 0.08-0.11; audio engine accruing ~23 jiffies / 2 s.
+
+CAVEAT: pro-input-0 was the driver during the first window and had dropped out of the
+graph by the second, so the capture 5511 -> 0 is a topology change, not a result -- the
+counter follows the driver, as recorded in "Dead ends". The Bitwig node is never the
+driver, so its 11 / 14 / 0 progression is the number that carries. n=1 per arm, windows
+sequential rather than interleaved.
