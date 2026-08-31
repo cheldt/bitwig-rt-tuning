@@ -1,8 +1,11 @@
 #!/bin/bash
 # Pro-audio session: tune the system for low-latency work, run Bitwig, restore on exit.
 #
-# Usage: ./start-bitwig.sh            start session
-#        ./start-bitwig.sh --restore  clean up after a crash that skipped the trap
+# Usage: ./start-bitwig.sh                       start session
+#        ./start-bitwig.sh <project.bwproject>   start session and open that project
+#        ./start-bitwig.sh --restore             clean up after a crash that skipped the trap
+#
+# Any arguments other than --restore are passed through to bitwig-studio verbatim.
 
 set -uo pipefail
 
@@ -197,6 +200,28 @@ if [ "${1:-}" = "--restore" ]; then
     exit 0
 fi
 
+# --- bitwig arguments -------------------------------------------------------
+
+# Everything left on the command line goes to bitwig-studio, so a session can be
+# started straight into a project:
+#   ./start-bitwig.sh /media/nvme2/data/bitwig_projects/spike/spike.bwproject
+BITWIG_ARGS=("$@")
+BITWIG_WHAT=""
+
+# A typo in the path costs a whole tuned start-up: Bitwig opens its usual dashboard
+# and only mentions the missing file in its own log, by which point the system has
+# already been retuned. Fail before touching anything.
+for arg in "${BITWIG_ARGS[@]}"; do
+    case "$arg" in
+        -*) continue ;;                      # a bitwig-studio flag, not a path
+    esac
+    if [ ! -e "$arg" ]; then
+        echo "No such file: $arg" >&2
+        exit 1
+    fi
+    BITWIG_WHAT=" with $(basename "$arg")"
+done
+
 # --- baseline ---------------------------------------------------------------
 
 echo "Optimizing system for Pro Audio..."
@@ -315,13 +340,13 @@ fi
 # before `bitwig-studio` never reaches the plugin hosts. It is done in the
 # ~/.local/bin/yabridge-host.exe wrapper instead.
 if [ "$PIN_BITWIG" -eq 1 ]; then
-    echo "Starting Bitwig (pinned to P-cores $PCORES)..."
+    echo "Starting Bitwig (pinned to P-cores $PCORES)$BITWIG_WHAT..."
     # Affinity is inherited across fork/exec, so this one mask covers
     # BitwigAudioEngine, BitwigPluginHost and every yabridge-host.exe.so.
-    taskset -c "$PCORES" bitwig-studio &
+    taskset -c "$PCORES" bitwig-studio "${BITWIG_ARGS[@]}" &
 else
-    echo "Starting Bitwig (unpinned, all 32 cores)..."
-    bitwig-studio &
+    echo "Starting Bitwig (unpinned, all 32 cores)$BITWIG_WHAT..."
+    bitwig-studio "${BITWIG_ARGS[@]}" &
 fi
 BITWIG_PID=$!
 
