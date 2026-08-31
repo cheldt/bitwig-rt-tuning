@@ -20,13 +20,8 @@ Pro-audio session tuning for Bitwig Studio + Kontakt/yabridge on Linux.
 | Kernel | 7.2.2-cachyos-rt-bore-lto |
 | Audio stack | PipeWire 1.6.8 / WirePlumber 0.5.15, quantum 256/48000 |
 | Host | Bitwig Studio, native PipeWire client |
-| Plugins | Kontakt 6, FM8, Diva via yabridge 5.1.1 (Wine 11.15, ntsync) |
+| Plugins | Kontakt 6, FM8, Diva via yabridge 5.1.1-37-g945528cd (Wine 11.16 TkG staging, ntsync) |
 | GPU | Nvidia (proprietary driver, IRQ 211) |
-| Storage | `/media/nvme1` = **nvme0n1** (wine prefix + NI library, ext4) · `/` `/home` = **nvme1n1** (btrfs) · `/media/nvme2` = nvme2n1 (projects, ext4) |
-
-The mount names do not match the device names: `/media/nvme1` is `nvme0n1`, and
-`nvme1n1` is the root/home drive. An earlier A/B measured the wrong device because
-of it — see F1 in the investigation.
 
 ## What it does
 
@@ -37,7 +32,11 @@ Bitwig, and restores everything on exit (including after a crash, via
 - **CPU placement.** Bitwig's tree is pinned to the P-cores; a background
   steward (`tools/steer-threads.sh`) then re-splits it by realtime priority —
   threads at rtprio ≥ 50 keep the P-cores, every other thread is pushed to the
-  E-cores. This is the fix that actually mattered; see below.
+  E-cores. One documented exception: yabridge's `audio-N` threads get the
+  P-cores by *name*, because yabridge only raises them to rtprio 85 after the
+  plug-in is activated. The steward also re-sweeps as soon as a new process
+  appears, not just on its timer. This is the fix that actually mattered; see
+  below.
 - **Power.** `performance` governor, deep C-states (C2/C3 ACPI) disabled on the
   P-cores only, Nvidia PowerMizer to max.
 - **Interrupts.** `snd_hdspe` IRQ pinned to one P-core; the two noisiest IRQs
@@ -45,7 +44,8 @@ Bitwig, and restores everything on exit (including after a crash, via
 - **Memory.** `vm.swappiness=10`, `vm.min_free_kbytes=256M` so a realtime thread
   never lands in direct reclaim.
 - **Storage.** NVMe queue scheduler set to `none` for the session — preventive,
-  for streaming libraries; measured null on RAM-resident samples.
+  for streaming libraries. The A/B that was supposed to justify this watched the
+  wrong device, so it is unmeasured, not null — see F1 in the investigation.
 - **Noise.** EasyEffects stopped for the session (and restarted after, only if
   the script was the one that stopped it). yabridge STDERR logging off by
   default: it cost 71.6 ms per 5 s across the plugin hosts with 11 instances.
@@ -124,7 +124,7 @@ tools/measure-xruns.sh          deadline misses on the playback path
 tools/catch-spike.py            find the thread burning CPU in a spike
 tools/catch-stall.py            tell a long *run* apart from a long *wait*
 tools/catch-load.py             sample the audio chain across a plugin load
-tools/summarize-load.py         reduce a catch-load.py run to the four decisive views
+tools/summarize-load.py         reduce a catch-load.py run to the five decisive views
 tools/faultgen.c                controlled minor-fault storm, to test memory pressure
 tools/run-arm.sh                one measurement arm: sampler + a tuned Bitwig session
 tools/ab-nvme-sched.sh          A/B the NVMe scheduler in one live session
@@ -150,6 +150,19 @@ Environment knobs, mainly for A/B testing:
 | `STEER_INTERVAL` | `15` | seconds between steward sweeps |
 | `YABRIDGE_LOG` | `0` | `1` = enable yabridge debug log (costs DSP) |
 
+`tools/steer-threads.sh` has its own knobs. It inherits the environment from
+`start-bitwig.sh`, so setting them on the session command line reaches it:
+
+| var | default | effect |
+|---|---|---|
+| `POLL` | `0.25` | seconds between new-process scans |
+| `BURST` | `12` | seconds of fast sweeping after a new process appears |
+| `RT_MIN` | `50` | rtprio at or above which a thread keeps a P-core |
+| `LATE_RT_NAMES` | `^audio-[0-9]+$` | thread comms promoted by name |
+| `LATE_RT_PROCS` | `^yabridge-host\.e$` | processes the name rule applies in |
+| `WINESERVER_NICE` | `-10` | nice level forced on `wineserver` |
+| `PCORES` / `ECORES` | `0-15` / `16-31` | the split itself |
+
 Requires passwordless-ish `sudo` (the script keeps the timestamp alive for the
 length of the session), `cpupower`, `taskset`, `nvidia-settings`, and `pw-top`.
 
@@ -163,3 +176,22 @@ give false "fixed" readings.
 
 Verify placement before trusting any measurement. The steward can fail to
 launch with no symptom other than a bad Load MAX.
+
+Two things learned the hard way while chasing the plugin-load spike:
+
+- **Load is wall-clock per callback, not one thread's CPU time.** Bitwig reports
+  its own callback time *plus* whatever it spends waiting for the plug-in. A
+  1.86 ms Load MAX came out as 0.35 ms in Bitwig's audio thread and 1.62 ms in
+  yabridge's, in the same 2 ms window. Attributing Load to a single thread will
+  send you after the wrong one.
+- **Sample fast enough to isolate one callback.** At 20 ms a window holds ~3.75
+  callbacks at quantum 256, so a single expensive one is averaged into
+  invisibility. The 2 ms rate in `tools/catch-load.py` is what finally located
+  it — raising the sampling rate beat reaching for `perf` and `bpftrace`, both of
+  which were installed and turned out unnecessary.
+
+`schedstat` cannot see block time at all: it accounts for on-CPU and
+runqueue-wait time, and a thread asleep on a futex is in neither. With
+`kernel.sched_schedstats=1`, `/proc/<tid>/sched` adds `sum_block_runtime`,
+`iowait_sum` and `wait_max` — and note those are float *milliseconds*, so parsing
+them as integers throws away exactly the resolution they exist for.
