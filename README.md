@@ -22,6 +22,11 @@ Pro-audio session tuning for Bitwig Studio + Kontakt/yabridge on Linux.
 | Host | Bitwig Studio, native PipeWire client |
 | Plugins | Kontakt 6, FM8, Diva via yabridge 5.1.1 (Wine 11.15, ntsync) |
 | GPU | Nvidia (proprietary driver, IRQ 211) |
+| Storage | `/media/nvme1` = **nvme0n1** (wine prefix + NI library, ext4) · `/` `/home` = **nvme1n1** (btrfs) · `/media/nvme2` = nvme2n1 (projects, ext4) |
+
+The mount names do not match the device names: `/media/nvme1` is `nvme0n1`, and
+`nvme1n1` is the root/home drive. An earlier A/B measured the wrong device because
+of it — see F1 in the investigation.
 
 ## What it does
 
@@ -69,6 +74,29 @@ Two consequences worth repeating:
 - **A 512 quantum only masked this.** 256 holds with 11 plugin instances once
   the chain is split correctly.
 
+### And a second one: the plugin-load spike
+
+Steady state healthy, but one spike every time a plugin is instantiated — Load
+MAX 2.05–2.12 ms at 0.08–0.12 ms average.
+
+Same class of cause, opposite direction. `fork()` gives a child the *calling
+thread's* affinity, and Bitwig forks `BitwigPluginHost` from a JVM worker thread
+that the steward has already moved to the E-cores. So the host is born inside
+`16-31` and creates its 33 `SCHED_FIFO` 85 audio threads there — where they stay
+until the next 15 s sweep. Measured: 8.7 s of a 6.8 s plugin load with the audio
+threads on 4.3 GHz cores.
+
+Not fixable by pre-setting the inherited mask: there is no main thread to
+pre-set, because the JVM does not fork from main. `--watch` now polls `/proc`
+every 0.25 s and sweeps in a 12 s burst when a matched process appears. E-core
+window 8.7 s → 0.52 s, Load MAX 2.054 → 1.867 ms, Load AVG 0.104 → 0.064 ms,
+worst callback on-CPU 2.075 → 0.455 ms.
+
+The residual 1.867 ms is *block* time in the synchronous cross-process call at
+plugin activation, which `schedstat` cannot see at all. Ruled out along the way,
+each with numbers: priority inversion, disk, clocks, Bitwig's graph rebuild, a
+2.66 M minor-fault storm, and DXVK/lavapipe.
+
 The full write-up — including the corrections, the dead ends, and the
 hypotheses that measured as wrong — is in
 [`docs/dsp-spike-investigation.md`](docs/dsp-spike-investigation.md).
@@ -82,6 +110,9 @@ tools/steer-threads.sh          the rtprio split; --watch loop and --restore
 tools/measure-xruns.sh          deadline misses on the playback path
 tools/catch-spike.py            find the thread burning CPU in a spike
 tools/catch-stall.py            tell a long *run* apart from a long *wait*
+tools/catch-load.py             sample the audio chain across a plugin load
+tools/summarize-load.py         reduce a catch-load.py run to the four decisive views
+tools/faultgen.c                controlled minor-fault storm, to test memory pressure
 tools/ab-nvme-sched.sh          A/B the NVMe scheduler in one live session
 docs/dsp-spike-investigation.md the investigation
 docs/kontakt7-zmq-crash.md      why the yabridge host needs a cwd inside the wine prefix

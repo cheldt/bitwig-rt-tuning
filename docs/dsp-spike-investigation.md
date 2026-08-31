@@ -734,3 +734,187 @@ spike. Covering that needs quantum 2048 (42.7 ms), i.e. 43 ms of latency. Note t
 measurement says the same thing: Diva is expensive, everything placement-related is
 already right. The remaining levers are Diva's Accuracy setting (2–4× on exactly the
 quantity RUN implicates), fewer instances, or freezing tracks — not more diagnosis.
+
+---
+
+# Investigation 4 — the plugin-load spike (2026-08-31)
+
+Different symptom from everything above. Steady state is healthy: Load AVG 0.082–0.118 ms,
+period jitter 0.77–0.96 %. One tall spike, reproducible, at the moment a Kontakt instance
+is instantiated. Load MAX 2.115 / 2.069 / 2.054 ms across three runs against the 5.333 ms
+deadline — no xrun, but 39 % of the deadline consumed by a project with one empty sampler
+in it.
+
+The two logs bracket the event precisely:
+
+```
+BitwigStudio.log   Started loading plug-in (0 queued)
+engine.log         About to start ... BitwigPluginHost-X64-AVX2 host Native-Instruments-Kontakt
+engine.log         Creating plugin audio thread proxy 0
+engine.log         About to create a VST 3 plugin instance ... Kontakt.vst3     (+5.9s)
+engine.log         PluginHost: Loading initial plugin state: ....vstpreset
+BitwigStudio.log   Engine loaded plug-in / Loading all plug-ins took 6790-6833 ms
+```
+
+~6 s of Wine/yabridge host startup, then ~0.9 s of instantiate plus preset load, with the
+audio callback firing every 5.333 ms throughout.
+
+## Root cause: the plugin host's audio threads are born on the E-cores
+
+`start-bitwig.sh` pins the tree to the P-cores; `steer-threads.sh` then moves every non-RT
+thread to the E-cores — including the JVM worker thread that Bitwig forks
+`BitwigAudioEngine` from. `fork()` gives the child the *calling thread's* affinity, so:
+
+```
+ts  1.04  bitwig-studio    0-15     (taskset from start-bitwig.sh, then swept)
+ts  5.46  BitwigAudioEngi  16-31    <- forked from a JVM worker already on the E-cores
+ts  7.54  BitwigPluginHos  16-31    <- inherits it, and creates 33 SCHED_FIFO 85
+                                       audio threads inside that mask
+ts 16.22  BitwigPluginHos  0-15     <- the next 15 s sweep, 8.7 s too late
+```
+
+So 33 realtime audio threads at priority 85 ran on 4.3 GHz E-cores for 8.7 s of a 6.8 s
+plugin load. The steward's own sweep is the natural experiment that proves it:
+
+```
+sec 69  0.491 ms      sec 76  0.315
+sec 70  2.075 ms      sec 77  0.830   (load finished, still on E-cores)
+sec 73  1.647 ms      sec 78  0.201   <- sweep landed. baseline, and stays there
+```
+
+Bitwig's `data-loop.0` worst callback tracks the E-core window exactly and collapses to
+baseline in the same second the threads reach the P-cores. Note sec 77: the load has
+already finished and nothing is faulting, yet it is still 0.830 ms against a 0.201 ms
+baseline — that is the placement cost on its own, roughly 4×.
+
+## The fix: react to a new process, do not wait for the next sweep
+
+Two approaches were tried. Only the second works.
+
+**Pre-setting the inherited mask does not work.** Exempting main threads from the E-core
+move so children are born unconfined was measured and rejected: `bitwig-studio` and
+`BitwigStudio` main threads went to `0-15` as intended, but `BitwigAudioEngine` still
+appeared at `16-31`, because the JVM does not fork it from the main thread. Load MAX
+2.028 ms, i.e. unchanged. There is no parent thread to pre-set.
+
+**Polling for new processes does.** `steer-threads.sh --watch` now scans `/proc` every
+`POLL` (0.25 s) and, when a matched process appears, sweeps every `POLL` for `BURST`
+(12 s) before returning to the slow interval. The burst matters: the audio threads are
+created progressively across the ~6 s of Wine startup, not all at fork time, so a single
+immediate sweep would miss most of them.
+
+The scan reads `comm` for every pid on every tick rather than caching the classification
+per pid. Caching is wrong because a pid can change identity without dying — `start.exe`
+execs into `yabridge-host.exe.so` and keeps its pid, so a cached "not one of ours" would
+be wrong for the rest of the session. This was found by a test whose own decoy was missed
+for exactly that reason (bash execs the last command of a subshell).
+
+Result:
+
+| | Load MAX | Load AVG | `data-loop.0` max in window | E-core window |
+|---|---|---|---|---|
+| baseline (3 runs) | 2.115 / 2.069 / 2.054 ms | 0.082–0.118 ms | 2.075 ms | 8.7 s |
+| burst sweep | **1.867 ms** | **0.064 ms** | **0.455 ms** | **0.52 s** |
+
+Detection latency measured 240 ms on a decoy. On-CPU time in the load window fell 4.6× at
+the peak and 3.1× in total (123.23 → 39.29 ms), and the visible shelf after the spike in
+the DSP graph is gone.
+
+## What the residual 1.867 ms is — and what it is not
+
+No thread anywhere near it. During the load window, on the fixed build, the highest on-CPU
+window of any realtime thread is `bitwig-remote-p` at 0.747 ms and `data-loop.0` at
+0.455 ms. `schedstat` accounts for on-CPU time and runqueue-wait time; a thread **blocked
+on a futex is in neither**, and Bitwig's "Load" is wall-clock per callback. So the residual
+is block time in the synchronous cross-process call at plugin activation — it peaks in the
+same 20 ms window as `Engine loaded plug-in`. Measuring it needs a different instrument
+(voluntary context switches per period), not more `schedstat`.
+
+## Ruled out, with numbers
+
+- **Scheduling / priority inversion.** In a 7-minute run with 8898 samples at 20 ms and
+  zero observer slips, exactly **one** RT thread had runqueue WAIT above 0.3 ms in a
+  window — `pipewire/data-loop.0`, 0.387 ms, before the load. Across the load window the
+  worst per-thread WAIT *total* was 0.84 ms over 7.5 s. Non-RT threads on the P-cores
+  during the load: **one**, `pipewire`, which is pinned there deliberately. The original
+  hypothesis — non-RT threads born on the P-cores starving the audio threads — is wrong;
+  the direction is inverted.
+- **Disk.** `pgmajfault = 0` throughout; `psi_io` zero at the spike.
+- **Clocks and C-states.** Governor `performance`, C2/C3 disabled on the P-cores, P-cores
+  at 5.4–5.5 GHz across the whole window.
+- **Bitwig's DSP graph rebuild / LLVM re-JIT.** A *warm* load — a second Kontakt into the
+  existing `BitwigPluginHost`, 472 ms, same graph rebuild, no Wine startup — peaks at
+  0.431 ms. Sandbox mode "By Plugin" is per plugin *type*, not per instance, so the second
+  instance reuses the host and never spawns a Wine process.
+- **The minor-fault storm.** This one looked convincing and is not the mechanism. The Wine
+  host takes **2.66 M minor faults and allocates 602 MB anonymous** during startup, and the
+  system-wide fault rate goes 6 k/s → 621 k/s, tracking the spike closely at one-second
+  granularity. But a synthetic storm of **4.46 M faults/s — 7× larger, 18 GB/s of
+  `clear_page` — driven on the E-cores against a live idle engine moves `data-loop.0` only
+  from 0.314 ms to 0.624 ms.** Contributory, roughly 2×, not causal. Generator:
+  `tools/faultgen.c` (mmap anonymous, touch every page, munmap, repeat).
+- **DXVK / lavapipe.** Kontakt's PE import table names `dxgi.dll` and `OPENGL32.dll`, so
+  DXVK initializes at DLL-load time, enumerates every Vulkan ICD, loads lavapipe with
+  `libLLVM.so.22.1` mapped twice (143 MB), reports `Found device: llvmpipe ... Skipping:
+  Software driver`, and discards it. Restricting `VK_DRIVER_FILES` and
+  `__EGL_VENDOR_LIBRARY_FILENAMES` to the NVIDIA ICD removes all of it — 0 LLVM mappings,
+  VmSize 2.61 → 2.28 GB — and changes `min_flt` by **262 out of 2,656,948** and Load MAX by
+  0.024 ms. Those mappings are file-backed and lazily mapped: they cost address space, not
+  faults. Disabling the D3D DLLs outright (`WINEDLLOVERRIDES=...=disabled`) breaks the load
+  entirely: `Could not load the VST3 module ...: LoadLibray failed: Module not found.`
+
+## Tools added for this investigation
+
+- `tools/catch-load.py` — dual-rate sampler. Fast path (20 ms) takes `schedstat` RUN/WAIT
+  deltas for every FIFO/RR thread at rtprio >= 50 plus per-CPU `/proc/stat`, PSI totals,
+  `/proc/vmstat` fault counters and the snd_hdspe IRQ count. Census (250 ms) records every
+  thread of every matched process with policy, rtprio and `Cpus_allowed_list`, plus P-core
+  MHz, C-state disable flags and the governor — that census is what made the E-core window
+  visible. Same conventions as `catch-stall.py`: no forks in the sample loop, observer at
+  `chrt -f 10 taskset -c 16-31`, observer-slip detection. Measured cadence median 20.00 ms,
+  p99 20.10 ms, 0 slips over 7 minutes.
+- `tools/summarize-load.py` — reduces the JSONL to non-RT threads on the P-cores over time,
+  governor/C-states/clocks, WAIT bursts, RUN bursts, and PSI/vmstat/P-core busy. `--window`
+  restricts the leaderboards to the instantiate window.
+- `tools/faultgen.c` — controlled minor-fault storm, for testing whether memory pressure
+  alone reproduces a symptom. It does not, here.
+
+Usage:
+
+```
+chrt -f 10 taskset -c 16-31 python3 tools/catch-load.py --dur 180 --out run.jsonl
+python3 tools/summarize-load.py run.jsonl --window 68.7 76.2
+```
+
+## Method notes
+
+- `schedstat` cannot see block time. Any conclusion of the form "no thread was running, so
+  nothing was wrong" is invalid for a host that measures wall-clock per callback.
+- Bitwig's Load MAX is a window max and persists; it cannot date an event. Correlate the
+  sampler's `wall_start` against `engine.log`/`BitwigStudio.log` instead.
+- `fstrim.service` ran for **12 minutes 3 seconds** during this session and held
+  `/proc/pressure/io` `full avg10` at 25–57 % system-wide against a 0.39 % baseline,
+  hitting ~99 % device-busy on nvme2n1, nvme0n1 and sdb in turn. Any measurement taken in
+  that window is void. See F2 below.
+- `printf '%.2f'` is locale-dependent and rejects `0.25` on this box (`LC_NUMERIC=de_DE`).
+
+## Two defects found while reading the system, unrelated to the spike
+
+**F1 — the NVMe device map in this repo was inverted.** `/media/nvme1` is `nvme0n1p1`
+(Wine prefix + NI library, ext4, 96 % full); `/` and `/home` are `nvme1n1p2` (btrfs);
+`/media/nvme2` is `nvme2n1p1`. The abandoned A/B in `2026-08-30_nvme-sched-ab.log` saw
+"zero reads on nvme1n1" and concluded the disk is not on the audio path — it was watching
+`/` and `/home`, not the Kontakt library. That conclusion rests on the wrong device.
+`start-bitwig.sh` sets `none` on all three, so only the measurement was misaimed.
+
+**F2 — inline `discard` on all four ext4 volumes, plus `fstrim.timer`.** Both costs are
+paid. The SATA pair is the worst of it:
+
+```
+ata6.00: Model 'Samsung SSD 850 PRO 1TB', rev 'EXM04B6Q', applying quirks: noncqtrim zeroaftertrim
+```
+
+`noncqtrim` means the kernel blacklists queued TRIM on this firmware, so every discard
+drains the NCQ queue and runs non-queued. The timer is `weekly` + `Persistent=true` +
+`RandomizedDelaySec=100min`, i.e. it can land mid-session — it did, 13 minutes after the
+first spike screenshot.

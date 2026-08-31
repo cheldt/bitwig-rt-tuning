@@ -28,8 +28,9 @@
 #
 # Usage: steer-threads.sh              apply once
 #        steer-threads.sh --dry-run    report what would change, touch nothing
-#        steer-threads.sh --watch 10   apply, then re-sweep every 10s (plugins that get
-#                                      loaded later spawn new threads)
+#        steer-threads.sh --watch 10   apply, then re-sweep every 10s, and immediately
+#                                      (every POLL for BURST seconds) whenever a new
+#                                      matched process appears -- see POLL/BURST below
 #        steer-threads.sh --restore    hand every thread back to all 32 CPUs
 
 set -uo pipefail
@@ -46,6 +47,22 @@ WINESERVER_NICE=${WINESERVER_NICE:--10}
 # Realtime priority at or above this keeps a P-core. Bitwig and yabridge both use 85
 # for audio threads; Wine maps everything else to 5.
 RT_MIN=${RT_MIN:-50}
+
+# A plugin load is the one event the slow sweep cannot cover. Bitwig forks
+# BitwigPluginHost from a JVM *worker* thread, which this script has already moved to
+# the E-cores, so the host is born inside 16-31 and creates its 33 SCHED_FIFO 85 audio
+# threads there. They stay until the next sweep. Measured 2026-08-31, one Kontakt 6
+# loading cold with --watch 15: the host appeared at t=7.54 and its audio threads sat
+# on 16-31 until the sweep at t=16.22 -- 8.7s during which Bitwig's data-loop.0 worst
+# callback ran 0.49-2.08ms against a 0.20ms baseline, dropping back to 0.20ms in the
+# same second they reached the P-cores.
+#
+# Fixing the inherited mask does not work: the forking thread is not the main thread,
+# so there is nothing to pre-set. Instead, watch for new processes cheaply and sweep as
+# soon as one shows up, then keep sweeping for BURST seconds because the audio threads
+# are created progressively over the ~6s of Wine startup, not all at fork time.
+POLL=${POLL:-0.25}
+BURST=${BURST:-12}
 
 # Matched against /proc/<pid>/comm, which the kernel truncates to 15 characters.
 PROC_PATTERNS='^(BitwigStudio|BitwigAudioEngi|BitwigPluginHos|bitwig-studio|yabridge-host\.e|wineserver|services\.exe|winedevice\.exe|plugplay\.exe|svchost\.exe|rpcss\.exe|explorer\.exe|NIHardwareServi|NIHostIntegrati|start\.exe|conhost\.exe)$'
@@ -186,13 +203,67 @@ if [ "$mode" = watch ]; then
     # takes several seconds to appear -- so only treat a missing engine as "session
     # over" once one has actually been seen.
     engine_seen=0
-    while sleep "$watch_interval"; do
-        if [ -n "$(pgrep -x BitwigAudioEngi 2>/dev/null)" ]; then
+
+    # POLL -> centiseconds with string ops only, so it can be fractional without bc. printf '%.2f' is locale-dependent
+    # (this box is de_DE and rejects "0.25"), and 10# is needed because a two-digit
+    # fraction like "05" would otherwise be read as octal.
+    poll_i=${POLL%%.*}
+    poll_f=${POLL#*.}
+    [ "$poll_f" = "$POLL" ] && poll_f=0
+    poll_f=${poll_f}00
+    poll_cs=$(( 10#${poll_i:-0} * 100 + 10#${poll_f:0:2} ))
+    [ "$poll_cs" -gt 0 ] || poll_cs=25
+    ticks_slow=$(( watch_interval * 100 / poll_cs ))
+    [ "$ticks_slow" -gt 0 ] || ticks_slow=1
+    ticks_burst=$(( BURST * 100 / poll_cs ))
+
+    declare -A MATCHED=()
+    burst=0
+    tick=0
+
+    # One glob of /proc plus one comm read per pid, at 1/POLL Hz: ~400 reads a tick,
+    # no per-thread work and no forks. Sets NEW=1 if a matched process appeared and
+    # ENGINE=1 if the audio engine is alive.
+    #
+    # comm is re-read every tick rather than cached per pid, because a pid can change
+    # identity without dying: start.exe execs into yabridge-host.exe.so and keeps its
+    # pid, so a cached "not one of ours" would be wrong for the rest of the session.
+    # Keying on (pid, comm) also makes pid reuse a miss rather than a false negative.
+    scan_procs() {
+        local pid p comm
+        local -A now=()
+        NEW=0; ENGINE=0
+        for pid in /proc/[0-9]*; do
+            p=${pid#/proc/}
+            read -r comm < "$pid/comm" 2>/dev/null || continue
+            [[ $comm =~ $PROC_PATTERNS ]] || continue
+            now[$p]=$comm
+            [ "$comm" = "BitwigAudioEngi" ] && ENGINE=1
+            [ "${MATCHED[$p]:-}" = "$comm" ] || NEW=1
+        done
+        # Rebuild wholesale so processes that exited drop out on their own.
+        MATCHED=()
+        for p in "${!now[@]}"; do MATCHED[$p]=${now[$p]}; done
+    }
+
+    while sleep "$POLL"; do
+        scan_procs
+        if [ "$ENGINE" -eq 1 ]; then
             engine_seen=1
         elif [ "$engine_seen" -eq 1 ]; then
             break
         fi
-        sweep >/dev/null
+
+        # A new plugin host is the case worth reacting to immediately.
+        [ "$NEW" -eq 1 ] && burst=$ticks_burst
+
+        if [ "$burst" -gt 0 ]; then
+            burst=$((burst-1))
+            sweep >/dev/null
+        elif [ $(( tick % ticks_slow )) -eq 0 ]; then
+            sweep >/dev/null
+        fi
+        tick=$((tick+1))
     done
 else
     sweep

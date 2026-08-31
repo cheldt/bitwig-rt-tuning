@@ -1,0 +1,89 @@
+Plugin-load spike, one Kontakt 6 instance loading cold, quantum 256/48000 (5.333 ms).
+Sampler: tools/catch-load.py at 20 ms fast / 250-500 ms census, chrt -f 10 taskset -c 16-31,
+0 observer slips in every run. Raw JSONL not kept (72 MB); the reductions are below.
+
+fstrim.service ran 12:22:36-12:34:39 (12m03s) and held /proc/pressure/io full avg10 at
+25-57 % system-wide. No arm below overlaps it.
+
+=== ARMS (Bitwig DSP Performance Graph) ===
+
+arm                       Load MAX   Load AVG   jitter   notes
+baseline                   2.115 ms   0.082 ms   0.96 %  original report
+baseline                   2.069 ms   0.118 ms   0.77 %
+baseline                   2.054 ms   0.104 ms   0.81 %  captured by sampler
+WINEDLLOVERRIDES d3d*/dxgi=disabled  --  --  --          plugin failed to load:
+                                                         "LoadLibray failed: Module not found"
+VK_DRIVER_FILES=nvidia only 2.030 ms  0.124 ms   0.79 %  lavapipe gone, no effect
+main-thread inherit fix     2.028 ms  0.112 ms   0.92 %  rejected, see below
+burst sweep (POLL .25/BURST 12) 1.867 ms 0.064 ms 0.87 % adopted
+
+=== ROOT CAUSE: BitwigPluginHost audio threads born on the E-cores ===
+
+Baseline, cold load (instantiate at ts 74.80):
+  ts 69.29   33 PluginsThreadPo (SCHED_FIFO 85)  mask 16-31
+  ts 77.84   33 PluginsThreadPo (SCHED_FIFO 85)  mask 0-15     <- next 15 s sweep
+  => 8.55 s on 4.3 GHz E-cores across a 6.8 s plugin load
+
+BitwigAudioEngi/data-loop.0 worst callback per second:
+  sec 68  0.094      sec 73  1.647
+  sec 69  0.491      sec 74  1.285
+  sec 70  2.075      sec 75  0.966
+  sec 71  0.937      sec 76  0.315
+  sec 72  1.055      sec 77  0.830   (load done, still on E-cores)
+                     sec 78  0.201   <- sweep landed; baseline, and stays there
+
+Placement cost alone (sec 77, load finished, nothing faulting): 0.830 vs 0.201 = 4.1x.
+
+With burst sweep:
+  ts 7.54    33 PluginsThreadPo  mask 16-31
+  ts 8.06    33 PluginsThreadPo  mask 0-15      <- 0.52 s
+  data-loop.0 worst callback across the whole load window (sec 7-14): 0.199-0.455 ms
+  detection latency on a decoy process: 240 ms
+
+Per-thread on-CPU in the load window:
+  thread                            baseline max / total   burst-fix max / total
+  BitwigAudioEngi/data-loop.0         2.075 / 123.23 ms      0.455 / 39.29 ms
+  BitwigPluginHos/bitwig-remote-p     1.138 /  17.29 ms      0.747 /  6.79 ms
+  yabridge-host.e/audio-0             0.621 /   9.20 ms      not in top 10
+
+=== REJECTED: pre-setting the inherited mask ===
+
+Exempting main threads from the E-core move, so children are born unconfined:
+  ts 1.04  bitwig-studio    0-15    <- rule applied
+  ts 1.04  BitwigStudio     0-15
+  ts 5.46  BitwigAudioEngi  16-31   <- NOT forked from main; JVM uses a worker thread
+  ts 7.54  BitwigPluginHos  16-31
+Load MAX 2.028 ms, unchanged. Reverted.
+
+=== RULED OUT ===
+
+Priority inversion.  7-minute run, 8898 fast samples, 0 slips: exactly ONE RT thread
+  exceeded 0.3 ms runqueue WAIT in a window (pipewire/data-loop.0, 0.387 ms, before the
+  load). Worst per-thread WAIT total across the load window: 0.84 ms over 7.5 s. Non-RT
+  threads on the P-cores during the load: 1 (pipewire, pinned there deliberately).
+Disk.  pgmajfault 0 throughout; psi_io 0 at the spike.
+Clocks.  governor performance, C2/C3 disabled, P-cores 5.4-5.5 GHz across the window.
+Graph rebuild.  Warm load (2nd Kontakt into the existing host, 472 ms, same graph work,
+  no Wine startup) peaks at 0.431 ms. Sandbox "By Plugin" is per plugin type, not per
+  instance, so the host is reused.
+Minor-fault storm.  Wine host: 2,656,948 minor faults, 0 major, 602 MB anon during
+  startup; system rate 6 k/s -> 621 k/s, correlating well at 1 s granularity. But a
+  synthetic storm 7x larger moved data-loop.0 barely at all:
+    quiet    (   ~6 k faults/s)  max 0.314  mean 0.255 ms
+    storm A  (2.93 M faults/s)   max 0.521  mean 0.400 ms
+    storm B  (4.46 M faults/s)   max 0.624  mean 0.502 ms   [18 GB/s clear_page]
+  Contributory ~2x, not causal.
+DXVK / lavapipe.  Kontakt imports dxgi.dll and OPENGL32.dll, so DXVK inits at DLL-load,
+  enumerates every ICD and loads lavapipe with libLLVM.so.22.1 mapped twice (143 MB),
+  then "Skipping: Software driver". Restricting VK_DRIVER_FILES and
+  __EGL_VENDOR_LIBRARY_FILENAMES to the NVIDIA ICD: 0 LLVM mappings, VmSize 2.61 -> 2.28
+  GB, min_flt 2,656,948 -> 2,657,210 (+262), Load MAX -0.024 ms. Lazily mapped file pages
+  cost address space, not faults.
+
+=== RESIDUAL ===
+
+1.867 ms with no thread above 0.747 ms on-CPU. schedstat accounts for on-CPU and
+runqueue-wait time only; a thread blocked on a futex is in neither, and Bitwig's Load is
+wall-clock per callback. The peak lands in the same 20 ms window as "Engine loaded
+plug-in", i.e. it is block time in the synchronous cross-process call at plugin
+activation. Measuring it needs voluntary-context-switch counting, not schedstat.
