@@ -92,10 +92,23 @@ every 0.25 s and sweeps in a 12 s burst when a matched process appears. E-core
 window 8.7 s → 0.52 s, Load MAX 2.054 → 1.867 ms, Load AVG 0.104 → 0.064 ms,
 worst callback on-CPU 2.075 → 0.455 ms.
 
-The residual 1.867 ms is *block* time in the synchronous cross-process call at
-plugin activation, which `schedstat` cannot see at all. Ruled out along the way,
+Then the same bug one level down. yabridge names its per-plugin audio thread
+`audio-N` at creation but only elevates it to `SCHED_FIFO` 85 when the host
+*activates* the plugin — so during the load it is FIFO 5, which the rtprio rule
+correctly reads as "not audio" and sends to the E-cores. Kontakt's first
+`process()` therefore ran at 4.3 GHz: 1.619 ms on-CPU in a single 2 ms window
+against a 0.028 ms median. Promoting by name (scoped to that process, so the
+other FIFO-5 Wine threads stay put) put it on a P-core before the activation
+callback: 0.945 ms, Load MAX 1.861 → 1.192 ms.
+
+Finding it needed a 2 ms sampling rate — at 20 ms a window holds ~3.75 callbacks
+and averages the one expensive one away — plus `kernel.sched_schedstats=1`, whose
+`sum_block_runtime = 0`, `iowait_sum = 0` and `wait_max = 0.538 ms` (a *lifetime*
+maximum) ruled out IO and scheduling delay outright. Ruled out along the way,
 each with numbers: priority inversion, disk, clocks, Bitwig's graph rebuild, a
 2.66 M minor-fault storm, and DXVK/lavapipe.
+
+**Load MAX 2.115 → 1.192 ms overall, quantum unchanged.**
 
 The full write-up — including the corrections, the dead ends, and the
 hypotheses that measured as wrong — is in
@@ -113,6 +126,7 @@ tools/catch-stall.py            tell a long *run* apart from a long *wait*
 tools/catch-load.py             sample the audio chain across a plugin load
 tools/summarize-load.py         reduce a catch-load.py run to the four decisive views
 tools/faultgen.c                controlled minor-fault storm, to test memory pressure
+tools/run-arm.sh                one measurement arm: sampler + a tuned Bitwig session
 tools/ab-nvme-sched.sh          A/B the NVMe scheduler in one live session
 docs/dsp-spike-investigation.md the investigation
 docs/kontakt7-zmq-crash.md      why the yabridge host needs a cwd inside the wine prefix

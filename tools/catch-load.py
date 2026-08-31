@@ -1,16 +1,37 @@
 #!/usr/bin/env python3
 """Sample the audio chain across a plugin-load transient.
 
-Two rates, because the interesting quantities have different costs:
+Three rates, because the interesting quantities have very different costs:
 
-  fast (default 20ms)  RT threads only (policy FIFO/RR, rtprio >= RT_MIN) plus
-                       global counters. ~25 threads x 2 files, cheap enough to
-                       run at 50Hz without perturbing what it watches.
+  fine (default 2ms)   Only the few threads matching --track: schedstat plus
+                       /proc/<tid>/sched. 4 threads x 2 files at 500Hz measured
+                       0.8% of one core.
+
+                       This rate exists to catch *block* time. schedstat accounts
+                       for on-CPU time and runqueue-wait time only -- a thread
+                       blocked on a futex is in neither, and Bitwig's reported
+                       "Load" is wall-clock per callback. What does show a block is
+                       nr_voluntary_switches: an audio callback normally sleeps once
+                       per period, so one that also waits on the plug-in host sleeps
+                       twice. At 2ms against a 5.333ms period most windows hold 0 or
+                       1 switches, so the extra one is unambiguous; at 20ms it is
+                       4.75 against an expected 3.75 and much harder to trust.
+
+                       Note sum_sleep_runtime (present once
+                       kernel.sched_schedstats=1) does NOT isolate this: the callback
+                       sleeps ~19.5 of every 20ms between periods anyway, so the
+                       inter-period sleep swamps a 1.4ms block. It is recorded for
+                       completeness, along with iowait_sum, which does cleanly rule
+                       IO in or out.
+
+  fast (default 20ms)  Every RT thread (policy FIFO/RR, rtprio >= RT_MIN) plus the
+                       global counters -- PSI, vmstat, per-CPU /proc/stat, IRQ 16.
+
   census (default 250ms) every thread of every matched process, with policy,
                        rtprio and Cpus_allowed_list. This is what shows the
                        steer-threads.sh sweep window: threads spawned during a
-                       plugin load inherit the P-core mask and keep it until the
-                       next sweep.
+                       plugin load inherit the mask of whatever forked them and keep
+                       it until the next sweep.
 
 Writes JSONL to --out. Analyse with summarize-load.py; nothing is interpreted here.
 
@@ -30,6 +51,38 @@ PROC_PATTERNS = re.compile(
     r"|explorer\.exe|NIHardwareServi|NIHostIntegrati|start\.exe|conhost\.exe"
     r"|pipewire|wireplumber|pipewire-pulse|irq/16-snd_hdspe)$"
 )
+
+# The threads whose wall-clock behaviour we care about. Deliberately tiny: the
+# fine rate reads /proc/<tid>/sched for each of these on every tick. Matched
+# against "<process comm>/<thread comm>".
+TRACK_DEFAULT = (
+    r"^(BitwigAudioEngi/data-loop\.0"          # the Bitwig audio callback itself
+    r"|BitwigPluginHos/bitwig-remote-p"        # the sandbox handoff
+    r"|yabridge-host\.e/audio-\d+"             # the Wine side of the handoff
+    r"|pipewire/data-loop\.0)$"                # the graph driver, for reference
+)
+
+# Suffixes to pull out of /proc/<tid>/sched. The prefix differs between kernel
+# versions ("se.statistics.*" on older, "stats.*" on newer), so match the tail.
+# Everything except nr_*_switches appears only when kernel.sched_schedstats=1.
+#
+# The time fields are printed as floats in *milliseconds*, so they are scaled to
+# integer nanoseconds here. Truncating them to whole milliseconds instead throws
+# away exactly the resolution this rate exists to measure -- a 1.4ms block in a
+# 2ms window would round to noise.
+SCHED_COUNTERS = (
+    "nr_switches", "nr_voluntary_switches", "nr_involuntary_switches",
+    "wait_count", "iowait_count",
+)
+# Cumulative times: sampled as deltas.
+SCHED_TIMES = (
+    "sum_sleep_runtime", "sum_block_runtime", "wait_sum", "iowait_sum",
+)
+# Lifetime maxima: a delta is meaningless, so the absolute value is recorded and
+# the summarizer watches for it increasing.
+SCHED_MAXES = ("sleep_max", "block_max", "wait_max")
+
+SCHED_KEYS = SCHED_COUNTERS + SCHED_TIMES + SCHED_MAXES
 
 VMSTAT_KEYS = (
     "pgfault", "pgmajfault", "pgpgin", "pgpgout", "pswpin", "pswpout",
@@ -74,6 +127,50 @@ def schedstat_of(taskdir):
         return int(f[0]), int(f[1]), int(f[2])
     except (IndexError, ValueError):
         return None
+
+
+def sched_detail_of(taskdir):
+    """The SCHED_KEYS fields from /proc/<tid>/sched.
+
+    Counters come back as ints; times and maxima as integer nanoseconds (the file
+    prints them as float milliseconds).
+    """
+    s = read(taskdir + "/sched")
+    if not s:
+        return None
+    out = {}
+    for line in s.splitlines():
+        k, _, v = line.partition(":")
+        k = k.strip()
+        for want in SCHED_KEYS:
+            if k == want or k.endswith("." + want):
+                try:
+                    f = float(v.strip())
+                except ValueError:
+                    break
+                out[want] = int(f) if want in SCHED_COUNTERS else int(f * 1e6)
+                break
+    return out
+
+
+def tracked_threads(track_re):
+    """[(tid, comm, taskdir, pcomm)] for threads matching --track."""
+    found = []
+    for pid, pcomm in matched_pids():
+        taskroot = "/proc/%s/task" % pid
+        try:
+            tids = os.listdir(taskroot)
+        except OSError:
+            continue
+        for tid in tids:
+            td = taskroot + "/" + tid
+            comm = read(td + "/comm")
+            if not comm:
+                continue
+            comm = comm.strip()
+            if track_re.match("%s/%s" % (pcomm, comm)):
+                found.append((tid, comm, td, pcomm))
+    return found
 
 
 def mask_of(taskdir):
@@ -220,7 +317,11 @@ def audio_irq_count(irq="16"):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dur", type=float, default=90.0, help="seconds")
+    ap.add_argument("--fine", type=float, default=0.002,
+                    help="fine interval s -- tracked threads only, catches block time")
     ap.add_argument("--fast", type=float, default=0.020, help="fast interval s")
+    ap.add_argument("--track", default=TRACK_DEFAULT,
+                    help="regex on '<process comm>/<thread comm>' for the fine rate")
     ap.add_argument("--census", type=float, default=0.250, help="census interval s")
     ap.add_argument("--rt-min", type=int, default=50)
     ap.add_argument("--out", required=True)
@@ -234,22 +335,29 @@ def main():
     mono0 = time.monotonic()
     fh.write(json.dumps({
         "t": "meta", "wall_start": t0, "argv": sys.argv,
-        "fast": a.fast, "census": a.census, "rt_min": a.rt_min,
+        "fine": a.fine, "fast": a.fast, "census": a.census, "rt_min": a.rt_min,
+        "track": a.track,
     }) + "\n")
 
+    track_re = re.compile(a.track)
     rts = rt_threads(a.rt_min)
+    trk = tracked_threads(track_re)
     prev_ss = {}
+    prev_fine = {}
     prev_cpu = cpustat()
     prev_psi = pressure()
     prev_vm = vmstat()
     prev_irq = audio_irq_count()
     prev_mono = mono0
 
+    next_fine = mono0
     next_fast = mono0
     next_census = mono0
     next_rescan = mono0 + a.rescan
     end = mono0 + a.dur
     slips = 0
+    fine_slips = 0
+    prev_fine_mono = mono0
 
     while True:
         now = time.monotonic()
@@ -258,6 +366,7 @@ def main():
 
         if now >= next_rescan:
             rts = rt_threads(a.rt_min)
+            trk = tracked_threads(track_re)
             next_rescan = now + a.rescan
 
         if now >= next_census:
@@ -272,6 +381,61 @@ def main():
                 "gov": (read("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor") or "?").strip(),
             }) + "\n")
             next_census = now + a.census
+
+        # --- fine sample: tracked threads only -------------------------------
+        # Every tick. This is the block-time instrument; see the module docstring
+        # for why nr_voluntary_switches and not sum_sleep_runtime.
+        fdt = now - prev_fine_mono
+        frows = []
+        for tid, comm, td, pcomm in trk:
+            ss = schedstat_of(td)
+            sd = sched_detail_of(td)
+            if not ss or not sd:
+                continue
+            key = tid + ":" + comm
+            p = prev_fine.get(key)
+            prev_fine[key] = (ss, sd)
+            if p is None:
+                continue
+            pss, psd = p
+            drun, dwait = ss[0] - pss[0], ss[1] - pss[1]
+            if drun < 0 or dwait < 0:          # tid reused
+                continue
+            dvol = sd.get("nr_voluntary_switches", 0) - psd.get("nr_voluntary_switches", 0)
+            dinv = sd.get("nr_involuntary_switches", 0) - psd.get("nr_involuntary_switches", 0)
+            extra = {}
+            for k in SCHED_TIMES:
+                if k in sd and k in psd:
+                    d = sd[k] - psd[k]
+                    if d:
+                        extra[k] = d
+            for k in SCHED_MAXES:
+                # Absolute, not a delta: these are lifetime maxima. Only record a
+                # change, so the summarizer sees exactly when a new max was set.
+                if k in sd and sd.get(k) != psd.get(k):
+                    extra[k] = sd[k]
+            if not (drun or dwait or dvol or dinv or extra):
+                continue
+            frows.append([tid, comm, pcomm, drun, dwait, dvol, dinv, extra])
+
+        if frows:
+            fslip = fdt > a.fine * 3
+            if fslip:
+                fine_slips += 1
+            fh.write(json.dumps({
+                "t": "fine", "ts": now - mono0, "dt": round(fdt, 6),
+                "slip": fslip, "th": frows,
+            }) + "\n")
+        prev_fine_mono = now
+
+        if now < next_fast:
+            next_fine += a.fine
+            sleep = next_fine - time.monotonic()
+            if sleep > 0:
+                time.sleep(sleep)
+            else:
+                next_fine = time.monotonic()
+            continue
 
         # --- fast sample -----------------------------------------------------
         dt = now - prev_mono
@@ -328,16 +492,21 @@ def main():
 
         prev_mono = now
         next_fast += a.fast
-        sleep = next_fast - time.monotonic()
+        if next_fast <= now:               # fell behind; resync rather than spin
+            next_fast = now + a.fast
+        next_fine += a.fine
+        sleep = next_fine - time.monotonic()
         if sleep > 0:
             time.sleep(sleep)
         else:
-            next_fast = time.monotonic()
+            next_fine = time.monotonic()
 
     fh.write(json.dumps({"t": "end", "ts": time.monotonic() - mono0,
-                         "slips": slips, "wall_end": time.time()}) + "\n")
+                         "slips": slips, "fine_slips": fine_slips,
+                         "wall_end": time.time()}) + "\n")
     fh.close()
-    print("wrote %s (%d observer slips)" % (a.out, slips), file=sys.stderr)
+    print("wrote %s (%d fast slips, %d fine slips)" % (a.out, slips, fine_slips),
+          file=sys.stderr)
 
 
 if __name__ == "__main__":

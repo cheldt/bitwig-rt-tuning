@@ -918,3 +918,120 @@ ata6.00: Model 'Samsung SSD 850 PRO 1TB', rev 'EXM04B6Q', applying quirks: noncq
 drains the NCQ queue and runs non-queued. The timer is `weekly` + `Persistent=true` +
 `RandomizedDelaySec=100min`, i.e. it can land mid-session — it did, 13 minutes after the
 first spike screenshot.
+
+## Phase 2 — the residual, and a second placement bug behind it
+
+Phase 1 left 1.867 ms unexplained: no realtime thread exceeded 0.747 ms on-CPU in the
+load window, yet Bitwig reported 1.867 ms. The conclusion drawn there — block time in a
+synchronous cross-process call — was half right about the mechanism and wrong about the
+cause. Two instrument changes settled it.
+
+**A 2 ms sampling rate, not 20 ms.** `tools/catch-load.py` gained a third rate that reads
+only the four threads matching `--track`. At 20 ms a window holds ~3.75 audio callbacks,
+so a single expensive one is averaged away; at 2 ms it stands alone. That alone located
+the event.
+
+**`kernel.sched_schedstats=1`** added the `stats.*` fields to `/proc/<tid>/sched` and
+closed off three hypotheses at once, for Bitwig's `data-loop.0` over a whole session:
+
+```
+sum_block_runtime   0.000000 ms     never blocks uninterruptibly
+block_max           0.000000 ms
+iowait_sum          0.000000 ms     zero IO wait, ever
+wait_max            0.537759 ms     lifetime maximum runqueue wait
+```
+
+`wait_max` is a lifetime maximum, so scheduling delay cannot produce a 1.86 ms spike under
+any circumstances. Note the time fields are printed as float *milliseconds*: truncating
+them to whole ms — as the first version of the parser did — destroys exactly the
+resolution they exist for. They are scaled to integer nanoseconds now, and the `*_max`
+fields are recorded as absolute values because a delta of a lifetime maximum is
+meaningless.
+
+**Voluntary switches turned out to be a flat line.** The hypothesis was that a blocking
+callback sleeps twice per period instead of once. Measured: `data-loop.0` does a dead-flat
+375 voluntary switches per second — 2.0 per period — through the load window and outside
+it, ±8 %. Bitwig's callback always waits twice per period; the spike adds no extra sleep.
+Useful negative result, and it ruled out the futex-storm reading.
+
+### What it actually was
+
+At 2 ms resolution the per-thread maximum on-CPU time in a single window, across a 150 s
+run, is unambiguous:
+
+```
+yabridge-host.e/audio-0           max 1.619 ms   p99 0.131   median 0.028
+pipewire/data-loop.0              max 0.597      p99 0.190   median 0.018
+BitwigAudioEngi/data-loop.0       max 0.353      p99 0.112   median 0.023
+BitwigPluginHos/bitwig-remote-p   max 0.273      p99 0.179   median 0.037
+```
+
+One window, t=17.128, at the instant of `Engine loaded plug-in`:
+
+```
+17.128  yabridge-host.e/audio-0          1.619 ms  vol=7    (58x its median)
+17.128  BitwigAudioEngi/data-loop.0      0.353 ms  vol=2    (adjacent windows: vol=10)
+17.128  BitwigPluginHos/bitwig-remote-p  0.179 ms  vol=11
+```
+
+Bitwig's callback slept once and stayed asleep while the Wine side ran. Its "Load" is
+wall-clock per callback, so it reports its own time plus the time it spends waiting for
+the plug-in — the 1.867 ms was never one thread's work.
+
+And the Wine side was on the wrong core:
+
+```
+t=16.33  yabridge-host.e/audio-0   prio=5    mask=16-31
+t=17.33  yabridge-host.e/audio-0   prio=85   mask=0-15
+```
+
+The burst at t=17.128 fell inside that window, and the per-CPU samples agree — cpu29,
+cpu31, cpu17, cpu19 busy, all E-cores, cpu31 pinned at 100 %. **yabridge names its
+per-plugin audio thread `audio-N` when it creates it but only elevates it to
+`SCHED_FIFO` 85 when the host activates the plugin.** Until then it is FIFO 5, which
+`RT_MIN=50` correctly classifies as "not an audio thread" and sends to the E-cores — so
+Kontakt's first `process()` call runs at 4.3 GHz.
+
+This is the same bug as phase 1 one level further down: a thread that *is* an audio thread
+but does not yet *look* like one.
+
+### Fix: promote by name, scoped
+
+`LATE_RT_NAMES` (`^audio-[0-9]+$`) matched within `LATE_RT_PROCS`
+(`^yabridge-host\.e$`) gets the P-cores regardless of priority. Scoping matters — every
+other FIFO-5 thread in that process (`BGLoading`, `Disk`, `worker`, `ProcessMonitor`)
+must stay on the E-cores, and there is exactly one `audio-N` per plugin instance. The
+thread comm is read only for processes in `LATE_RT_PROCS`, so this costs ~20 extra reads
+per Wine host per sweep, not one per thread in the tree.
+
+Verified:
+
+```
+t=13.31  audio-0  prio=5   mask=16-31    born on the E-cores
+t=13.56  audio-0  prio=5   mask=0-15     promoted by name, still FIFO 5
+t=14.32  audio-0  prio=85  mask=0-15     yabridge elevates the priority
+```
+
+The activation burst landed at t=14.16, after the move.
+
+| | `audio-0` max on-CPU | Load MAX | Load AVG |
+|---|---|---|---|
+| phase 1 (burst sweep only) | 1.619 ms | 1.861–1.867 ms | 0.064 ms |
+| phase 2 (+ by-name promotion) | **0.945 ms** | **1.192 ms** | 0.083 ms |
+
+1.71x on the burst, which is about what a P-core buys over an E-core on this part.
+
+### Where this stops
+
+The remaining 0.945 ms is Kontakt's cold first `process()` — genuine compute in the
+plug-in, now on a 5.5 GHz core, at 18 % of the deadline. Across the whole investigation
+Load MAX went **2.115 -> 1.192 ms**, a 44 % reduction, with no change to quantum.
+
+Two things worth recording about method:
+
+- **The planned escalation was not needed.** bpftrace, `perf` and `trace-cmd` were
+  installed to name a futex the callback was supposedly blocked on. There is no futex:
+  the time is ordinary on-CPU time in another process on the wrong core, and 2 ms `/proc`
+  sampling found it. Raising the sampling rate beat reaching for a bigger tool.
+- **The observer was checked, not assumed.** The traced arm reported Load MAX 1.861 ms
+  against 1.867 ms untraced, so the sampler is not moving the number it measures.

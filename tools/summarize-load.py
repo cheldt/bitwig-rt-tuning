@@ -7,6 +7,8 @@
      running is a placement/inversion problem, not a throughput one.
   3. RUN bursts per thread -- who was actually on CPU during the spike.
   4. PSI / vmstat / P-core busy -- CPU contention vs IO stall vs reclaim.
+  5. Block time, from the fine rate -- voluntary switches per period. schedstat
+     cannot see a thread blocked on a futex; an extra voluntary switch can.
 
 Usage: python3 summarize-load.py run.jsonl [--pcores 0-15] [--top 20]
        python3 summarize-load.py run.jsonl --window 12.0 18.0
@@ -42,12 +44,18 @@ def main():
     ap.add_argument("--window", nargs=2, type=float, default=None,
                     help="restrict RUN/WAIT leaderboards to [start end] seconds")
     ap.add_argument("--wait-thresh-ms", type=float, default=0.5)
+    ap.add_argument("--period-ms", type=float, default=5.333,
+                    help="audio period, for the expected-switches-per-period baseline")
+    ap.add_argument("--track-comm", default="data-loop.0",
+                    help="thread comm to report block time for")
+    ap.add_argument("--track-proc", default="BitwigAudioEngi",
+                    help="process comm to report block time for")
     ap.add_argument("--run-thresh-ms", type=float, default=2.0)
     a = ap.parse_args()
 
     pcores = parse_cpuset(a.pcores)
     meta = None
-    fasts, censuses = [], []
+    fasts, censuses, fines = [], [], []
 
     with open(a.jsonl) as f:
         for line in f:
@@ -59,11 +67,14 @@ def main():
                 meta = r
             elif r["t"] == "fast":
                 fasts.append(r)
+            elif r["t"] == "fine":
+                fines.append(r)
             elif r["t"] == "census":
                 censuses.append(r)
             elif r["t"] == "end":
                 meta = meta or {}
                 meta["slips"] = r.get("slips")
+                meta["fine_slips"] = r.get("fine_slips")
                 meta["wall_end"] = r.get("wall_end")
 
     if not fasts:
@@ -72,8 +83,9 @@ def main():
 
     wall0 = (meta or {}).get("wall_start", 0)
     print("=" * 78)
-    print("wall_start %.3f   samples %d   census %d   observer slips %s"
-          % (wall0, len(fasts), len(censuses), (meta or {}).get("slips")))
+    print("wall_start %.3f   fast %d   fine %d   census %d   slips fast=%s fine=%s"
+          % (wall0, len(fasts), len(fines), len(censuses),
+             (meta or {}).get("slips"), (meta or {}).get("fine_slips")))
     print("  (add wall_start to any ts below to correlate with engine.log)")
 
     # --- 1. P-core occupancy by non-RT threads --------------------------------
@@ -211,6 +223,87 @@ def main():
         print("  ... %d more" % (shown - 80))
     if shown == 0:
         print("  nothing above threshold -- system was quiet")
+
+    # --- 5. block time from the fine rate -------------------------------------
+    if fines:
+        key = "%s/%s" % (a.track_proc, a.track_comm)
+        print()
+        print("=" * 78)
+        print("5. BLOCK TIME -- %s, voluntary switches vs periods (%.3f ms)"
+              % (key, a.period_ms))
+        print("   A callback that blocks on something sleeps more often than one that")
+        print("   just processes and waits for the next period -- and blocked time is")
+        print("   neither RUN nor WAIT, so schedstat cannot see it at all.")
+        print("   The baseline is empirical, not 1.0: an epoll driver loop legitimately")
+        print("   wakes several times per period (PipeWire's data-loop.0 sits near 5).")
+        print("   What matters is deviation from this thread's own quiet baseline.")
+        print()
+
+        per_sec_vol = defaultdict(int)
+        per_sec_run = defaultdict(float)
+        per_sec_span = defaultdict(float)
+        doubles = []
+        sched_extra = defaultdict(int)
+        for r in fines:
+            if r["slip"]:
+                continue
+            sec = int(r["ts"])
+            for tid, comm, pcomm, drun, dwait, dvol, dinv, extra in r["th"]:
+                if "%s/%s" % (pcomm, comm) != key:
+                    continue
+                per_sec_vol[sec] += dvol
+                per_sec_run[sec] += drun / 1e6
+                per_sec_span[sec] += r["dt"]
+                for k, v in extra.items():
+                    sched_extra[k] += v
+                doubles.append((r["ts"], dvol, drun / 1e6, dwait / 1e6, r["dt"] * 1000))
+
+        if not per_sec_span:
+            print("  no fine samples for %s -- was it running? check --track-proc/--track-comm" % key)
+        else:
+            rows = []
+            for sec in sorted(per_sec_vol):
+                span = per_sec_span[sec]
+                if span < 0.2:
+                    continue
+                periods = span * 1000.0 / a.period_ms
+                rows.append((sec, per_sec_vol[sec], periods,
+                             per_sec_vol[sec] / periods if periods else 0,
+                             per_sec_run[sec]))
+            if rows:
+                ratios = sorted(r[3] for r in rows)
+                med = ratios[len(ratios) // 2]
+                print("baseline sw/period for this thread (median second): %.2f" % med)
+                print("%5s %9s %10s %10s %9s  %s"
+                      % ("sec", "vol_sw", "periods", "sw/period", "run_ms", "vs baseline"))
+                for sec, vol, periods, ratio, run in rows:
+                    dev = (ratio / med - 1.0) * 100 if med else 0
+                    mark = "  <<<" if abs(dev) > 25 else ""
+                    print("%5d %9d %10.1f %10.2f %9.2f  %+6.0f%%%s"
+                          % (sec, vol, periods, ratio, run, dev, mark))
+
+            # The spike is a single callback, so per-second aggregates can hide it.
+            # List the individual fine windows that stand out.
+            print()
+            for label, idx in (("voluntary switches", 1), ("on-CPU ms", 2)):
+                top = sorted(doubles, key=lambda d: -d[idx])[:15]
+                if not top:
+                    continue
+                print("top fine windows by %s:" % label)
+                print("%10s %6s %9s %9s %8s" % ("ts", "vol", "run_ms", "wait_ms", "dt_ms"))
+                for ts, dvol, drun, dwait, dt in top:
+                    print("%10.3f %6d %9.3f %9.3f %8.2f" % (ts, dvol, drun, dwait, dt))
+                print()
+
+        if sched_extra:
+            print()
+            print("kernel.sched_schedstats fields seen (totals over run, ns):")
+            for k in sorted(sched_extra):
+                print("  %-22s %d" % (k, sched_extra[k]))
+        else:
+            print()
+            print("no sched_schedstats fields present "
+                  "(enable with: sudo sysctl -w kernel.sched_schedstats=1)")
 
     # aggregate
     print()

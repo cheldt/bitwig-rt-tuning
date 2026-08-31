@@ -87,3 +87,80 @@ runqueue-wait time only; a thread blocked on a futex is in neither, and Bitwig's
 wall-clock per callback. The peak lands in the same 20 ms window as "Engine loaded
 plug-in", i.e. it is block time in the synchronous cross-process call at plugin
 activation. Measuring it needs voluntary-context-switch counting, not schedstat.
+
+
+================================================================================
+PHASE 2 -- the residual, 2 ms sampling + kernel.sched_schedstats=1
+================================================================================
+
+Sampler: tools/catch-load.py, three rates (fine 2 ms on 4 tracked threads, fast 20 ms,
+census 250 ms), chrt -f 10 taskset -c 16-31. Observer check: traced arm reported Load MAX
+1.861 ms vs 1.867 ms untraced, so the sampler does not move the number.
+
+=== schedstats fields, BitwigAudioEngi/data-loop.0, cumulative over a session ===
+  se.sum_exec_runtime      319.806552 ms
+  sum_sleep_runtime      67715.724531 ms
+  sum_block_runtime          0.000000 ms   <- never blocks uninterruptibly
+  block_max                  0.000000 ms
+  sleep_max                234.894148 ms
+  wait_max                   0.537759 ms   <- LIFETIME max runqueue wait
+  wait_sum                   5.536191 ms
+  iowait_sum                 0.000000 ms   <- zero IO wait, ever
+  nr_voluntary_switches         25316
+  nr_involuntary_switches        3992
+wait_max is a lifetime maximum, so scheduling delay cannot produce a 1.86 ms spike.
+NOTE: these fields are float MILLISECONDS. Truncating to int ms destroys the resolution.
+
+=== voluntary switches: a flat line, hypothesis dead ===
+BitwigAudioEngi/data-loop.0 holds ~375 voluntary switches/s = 2.0 per period, through the
+load window and outside it, +/-8 %. Bitwig's callback always waits twice per period; the
+spike adds no extra sleep.
+
+=== max on-CPU in ONE 2 ms window, whole 150 s run ===
+  thread                             t1 (burst fix)   t2 (+by-name)   median
+  yabridge-host.e/audio-0                  1.619            0.945      0.028
+  pipewire/data-loop.0                     0.597            0.209      0.012-0.018
+  BitwigAudioEngi/data-loop.0              0.353            0.369      0.023-0.025
+  BitwigPluginHos/bitwig-remote-p          0.273            0.291      0.037
+
+Bitwig's own callback never exceeds 0.37 ms. Its "Load" is wall-clock per callback, so it
+reports its own time plus the wait for the plug-in.
+
+=== the single window, t1, at "Engine loaded plug-in" ===
+  ts 17.128  yabridge-host.e/audio-0          1.619 ms  vol=7   (58x median)
+  ts 17.128  BitwigAudioEngi/data-loop.0      0.353 ms  vol=2   (neighbours: vol=10)
+  ts 17.128  BitwigPluginHos/bitwig-remote-p  0.179 ms  vol=11
+Per-CPU busy at ts 17.124: cpu29=100 %, cpu31=100 %, cpu17=50 %, cpu19=33 % -- all E-cores.
+
+=== ROOT CAUSE 2: yabridge elevates its audio thread late ===
+  t1:  ts 16.33  yabridge-host.e/audio-0  prio=5   mask=16-31
+       ts 17.33  yabridge-host.e/audio-0  prio=85  mask=0-15    <- 200 ms after the burst
+yabridge names the thread audio-N at creation but only raises it to SCHED_FIFO 85 when the
+host activates the plugin. Until then RT_MIN=50 correctly classifies it as non-audio and
+sends it to the E-cores, so the first process() call runs at 4.3 GHz.
+
+Fix: LATE_RT_NAMES='^audio-[0-9]+$' within LATE_RT_PROCS='^yabridge-host\.e$' gets the
+P-cores regardless of priority. Scoped deliberately: BGLoading, Disk, worker and
+ProcessMonitor in the same process are also FIFO 5 and must stay on the E-cores.
+
+  t2:  ts 13.31  audio-0  prio=5   mask=16-31   born on E-cores
+       ts 13.56  audio-0  prio=5   mask=0-15    promoted by name, still FIFO 5
+       ts 14.32  audio-0  prio=85  mask=0-15    yabridge raises the priority
+  activation burst at ts 14.16 -- after the move. 1.619 -> 0.945 ms (1.71x).
+
+=== ARMS ===
+  arm                              Load MAX   Load AVG   jitter
+  phase-1 burst sweep               1.867 ms   0.064 ms   0.87 %
+  phase-1 burst sweep (sampled)     1.861 ms   0.066 ms   0.90 %
+  + by-name promotion               1.192 ms   0.083 ms   0.77 %
+
+Overall across both phases: Load MAX 2.115 -> 1.192 ms (-44 %), quantum unchanged at 256.
+
+=== NOT NEEDED ===
+bpftrace / perf / trace-cmd were installed to name a futex the callback was blocked on.
+There is no futex: the time is ordinary on-CPU time in another process on the wrong core.
+Raising the sampling rate from 20 ms to 2 ms found it. The tools remain installed.
+
+=== RESIDUAL ===
+0.945 ms is Kontakt's cold first process(), genuine compute in the plug-in, now on a
+5.5 GHz core, 18 % of the 5.333 ms deadline.

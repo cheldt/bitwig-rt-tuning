@@ -64,6 +64,25 @@ RT_MIN=${RT_MIN:-50}
 POLL=${POLL:-0.25}
 BURST=${BURST:-12}
 
+# Audio threads that are not yet realtime. yabridge names its per-plugin audio
+# thread audio-N when it creates it, but only elevates it to SCHED_FIFO 85 when the
+# host activates the plugin. In between it is FIFO 5, which RT_MIN correctly reads
+# as "not an audio thread" and sends to the E-cores -- and Kontakt's first
+# process() call then runs there.
+#
+# Measured 2026-08-31 at 2ms resolution, one Kontakt 6 loading cold with the burst
+# sweep already in place: yabridge-host.e/audio-0 was FIFO 5 on 16-31 at t=16.33 and
+# only became FIFO 85 on 0-15 at t=17.33. The activation callback landed at t=17.128,
+# inside that window, and burned 1.619ms on-CPU in a single 2ms window against a
+# 0.028ms median -- on cpu31, an E-core. Bitwig's own data-loop.0 never exceeded
+# 0.353ms; it was blocked waiting, and reported the sum as Load MAX 1.861ms.
+#
+# So: promote by name, scoped to the processes that do this, and leave every other
+# FIFO-5 Wine thread (BGLoading, Disk, worker, ProcessMonitor) on the E-cores where
+# it belongs.
+LATE_RT_NAMES=${LATE_RT_NAMES:-'^audio-[0-9]+$'}
+LATE_RT_PROCS=${LATE_RT_PROCS:-'^yabridge-host\.e$'}
+
 # Matched against /proc/<pid>/comm, which the kernel truncates to 15 characters.
 PROC_PATTERNS='^(BitwigStudio|BitwigAudioEngi|BitwigPluginHos|bitwig-studio|yabridge-host\.e|wineserver|services\.exe|winedevice\.exe|plugplay\.exe|svchost\.exe|rpcss\.exe|explorer\.exe|NIHardwareServi|NIHostIntegrati|start\.exe|conhost\.exe)$'
 
@@ -115,6 +134,15 @@ thread_sched() {
     [ -n "$POL" ] && [ -n "$PRIO" ]
 }
 
+# True if this thread is an audio thread by name -- checked only for the few
+# processes in LATE_RT_PROCS, so it costs one extra comm read for ~20 threads per
+# Wine host rather than one for every thread in the tree.
+thread_is_late_rt() {
+    local tcomm
+    read -r tcomm < "$1/comm" 2>/dev/null || return 1
+    [[ $tcomm =~ $LATE_RT_NAMES ]]
+}
+
 # Sets MASK from /proc/<tid>/status.
 current_mask() {
     local k v
@@ -131,7 +159,7 @@ current_mask() {
 # --- sweep ------------------------------------------------------------------
 
 sweep() {
-    local moved=0 skipped=0 audio=0 other=0 want mask tid task comm pid
+    local moved=0 skipped=0 audio=0 other=0 late=0 want mask tid task comm pid
 
     while read -r pid comm; do
         [ -d "/proc/$pid" ] || continue
@@ -146,6 +174,8 @@ sweep() {
                     # 1 = SCHED_FIFO, 2 = SCHED_RR.
                     if { [ "$POL" = "1" ] || [ "$POL" = "2" ]; } && [ "$PRIO" -ge "$RT_MIN" ]; then
                         want=$PCORES; audio=$((audio+1))
+                    elif [[ $comm =~ $LATE_RT_PROCS ]] && thread_is_late_rt "$task"; then
+                        want=$PCORES; late=$((late+1))
                     else
                         want=$ECORES; other=$((other+1))
                     fi ;;
@@ -183,12 +213,12 @@ sweep() {
     fi
 
     case "$mode" in
-        dry)     printf 'dry run: %d audio (rtprio >= %s) -> %s, %d other -> %s, %d already correct\n' \
-                     "$audio" "$RT_MIN" "$PCORES" "$other" "$ECORES" "$skipped" ;;
+        dry)     printf 'dry run: %d audio (rtprio >= %s) -> %s, %d by name -> %s, %d other -> %s, %d already correct\n' \
+                     "$audio" "$RT_MIN" "$PCORES" "$late" "$PCORES" "$other" "$ECORES" "$skipped" ;;
         restore) printf 'restored %d threads to %s (%d already there)\n' \
                      "$moved" "$ALLCORES" "$skipped" ;;
-        *)       printf 'steered %d threads (%d audio on %s, %d other on %s, %d unchanged)\n' \
-                     "$moved" "$audio" "$PCORES" "$other" "$ECORES" "$skipped" ;;
+        *)       printf 'steered %d threads (%d audio + %d by-name on %s, %d other on %s, %d unchanged)\n' \
+                     "$moved" "$audio" "$late" "$PCORES" "$other" "$ECORES" "$skipped" ;;
     esac
 }
 
