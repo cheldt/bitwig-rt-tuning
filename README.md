@@ -20,7 +20,7 @@ Pro-audio session tuning for Bitwig Studio + Kontakt/yabridge on Linux.
 | Kernel | 7.2.2-cachyos-rt-bore-lto |
 | Audio stack | PipeWire 1.6.8 / WirePlumber 0.5.15, quantum 256/48000 |
 | Host | Bitwig Studio, native PipeWire client |
-| Plugins | Kontakt 6, FM8, Diva via yabridge 5.1.1-37-g945528cd (Wine 11.16 TkG staging, ntsync) |
+| Plugins | Kontakt 6, FM8, Diva via yabridge 5.1.1-57-gb580a9f7 (upstream `master`, Wine 11.16 TkG staging, ntsync) |
 | GPU | Nvidia (proprietary driver, IRQ 211) |
 
 ## What it does
@@ -149,6 +149,8 @@ Environment knobs, mainly for A/B testing:
 | `STEER_THREADS` | `1` | `0` = pin, but do not re-split by rtprio |
 | `STEER_INTERVAL` | `15` | seconds between steward sweeps |
 | `YABRIDGE_LOG` | `0` | `1` = enable yabridge debug log (costs DSP) |
+| `YABRIDGE_DEBUG_LEVEL` | `1` when logging | `2` = also trace every bridged call. Level 0 logs errors only, which is not enough to see a plugin editor fail to embed |
+| `YABRIDGE_DEBUG_FILE` | `/tmp/yabridge.log` | where that log goes |
 
 `tools/steer-threads.sh` has its own knobs. It inherits the environment from
 `start-bitwig.sh`, so setting them on the session command line reaches it:

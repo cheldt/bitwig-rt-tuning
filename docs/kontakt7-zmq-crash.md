@@ -66,7 +66,13 @@ irrelevant.
 ## Fix
 
 A wrapper at `~/.local/bin/yabridge-host.exe` that `cd`s into `$WINEPREFIX/drive_c` and
-execs `/usr/bin/yabridge-host.exe`. Copy kept as `docs/reference-yabridge-host-wrapper.sh`.
+execs the real host. Copy kept as `docs/reference-yabridge-host-wrapper.sh`.
+
+**Layout changed 2026-09-04.** The packaged install this originally wrapped is gone —
+`/usr/bin/yabridge-host.exe{,.so}` no longer exist, and nothing owned them. yabridge is now
+built from `~/dev/yabridge` on upstream `master`, so the wrapper execs
+`~/.local/share/yabridge/yabridge-host.exe` instead, and the paragraph below about a package
+update no longer applies.
 
 Two things about it are not obvious:
 
@@ -74,14 +80,37 @@ Two things about it are not obvious:
   before `bitwig-studio` looks like it should reach the plugin hosts — but Bitwig chdirs
   `BitwigAudioEngine` and `BitwigPluginHost` to `~/.BitwigStudio/log` itself, and the crash
   comes back unchanged. Verified 2026-08-30; the launcher now only carries a pointer comment.
-- **The wrapper directory also needs `yabridge-host.exe.so` beside it**, as a symlink to
-  `/usr/bin/yabridge-host.exe.so`. yabridge resolves the host through `PATH` and rejects a
-  directory that has the `.exe` without the `.so` — `yabridgectl status` reports
-  `yabridge-host.exe: <not found>` until the symlink is there.
+- **The wrapper directory needs the `libyabridge-*.so` files beside it.** Each wrapped
+  plugin `.so` is a *chainloader*: it finds the first `yabridge-host.exe` on `PATH` and
+  `dlopen`s `libyabridge-vst3.so` **from that same directory**
+  (`src/chainloader/utils.h`). Because the wrapper is what `PATH` finds, the libraries have
+  to sit in `~/.local/bin` next to it — putting them only in `~/.local/share/yabridge` does
+  not work, since the search returns the first `yabridge-host.exe` and never falls through.
+  They are symlinks into `~/dev/yabridge/build/`, so a rebuild needs no reinstall.
+- The old note here said the wrapper directory needs `yabridge-host.exe.so` beside it, as a
+  symlink to `/usr/bin/yabridge-host.exe.so`. That no longer holds: the real host is a
+  winegcc launcher that resolves its own `.so` relative to its own path, so the pair lives
+  together in `~/.local/share/yabridge` and the symlink was removed.
+
+Current layout:
+
+```
+~/.local/share/yabridge/
+    yabridge-host.exe        # winegcc launcher, resolves its .so next to itself
+    yabridge-host.exe.so     # the real host, reports 5.1.1-57-gb580a9f7
+
+~/.local/bin/
+    yabridge-host.exe        # this wrapper; first on PATH, so it is what gets found
+    libyabridge-vst2.so -> ~/dev/yabridge/build/libyabridge-vst2.so
+    libyabridge-vst3.so -> ~/dev/yabridge/build/libyabridge-vst3.so
+    libyabridge-clap.so -> ~/dev/yabridge/build/libyabridge-clap.so
+```
 
 `PATH` is read when a host is spawned, so new plugin instances pick the wrapper up without
-restarting Bitwig. A yabridge package update replaces `/usr/bin/yabridge-host.exe` and
-leaves the wrapper alone, but re-check the symlink if `yabridge-host.exe.so` ever moves.
+restarting Bitwig. Nothing external replaces these files any more — but `yabridgectl` is
+also gone (it needs Rust to build), so wrapping a *newly installed* Windows plugin will
+need it back. Re-wrapping after a yabridge rebuild is **not** needed: the per-plugin
+chainloaders are unchanged by it.
 
 ## Scope
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Wrapper around /usr/bin/yabridge-host.exe that moves the working directory into the
+# Wrapper around ~/.local/share/yabridge/yabridge-host.exe that moves the working directory into the
 # Wine prefix before the plugin host starts.
 #
 # Kontakt 7 and Komplete Kontrol bundle libzmq 4.3.4, whose Windows signaler creates its
@@ -24,4 +24,4 @@ if [ -w "$WINEPREFIX/drive_c" ]; then
     cd "$WINEPREFIX/drive_c" || exit 1
 fi
 
-exec /usr/bin/yabridge-host.exe "$@"
+exec "$HOME/.local/share/yabridge/yabridge-host.exe" "$@"

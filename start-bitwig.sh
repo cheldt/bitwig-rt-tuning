@@ -318,9 +318,14 @@ irq_thread=$(pgrep snd_hdspe 2>/dev/null | head -1)
 # Off by default: every Wine STDERR line crosses a pipe that a 'wine-stdio' thread in
 # BitwigPluginHost has to read, which measured 71.6 ms per 5 s across the hosts with 11
 # plugin instances loaded. Set YABRIDGE_LOG=1 when actually debugging a plugin.
+# Level 0 logs only errors, so the file alone is near-useless for an editor problem:
+# the IPlugView::isPlatformTypeSupported / attached / getSize calls that decide whether
+# a plugin GUI gets embedded are only traced from level 1 up. Default to 1 here and let
+# YABRIDGE_DEBUG_LEVEL=2 ask for the full message trace.
 if [ "${YABRIDGE_LOG:-0}" -eq 1 ]; then
     export YABRIDGE_DEBUG_FILE=${YABRIDGE_DEBUG_FILE:-/tmp/yabridge.log}
-    echo "yabridge debug log: $YABRIDGE_DEBUG_FILE"
+    export YABRIDGE_DEBUG_LEVEL=${YABRIDGE_DEBUG_LEVEL:-1}
+    echo "yabridge debug log: $YABRIDGE_DEBUG_FILE (level $YABRIDGE_DEBUG_LEVEL)"
 fi
 
 # Pinning without the steward is measurably worse than not pinning at all, so refuse the
