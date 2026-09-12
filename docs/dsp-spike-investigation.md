@@ -92,12 +92,13 @@ thread, serialising all 8 instruments.
 
 On **Kontakt's multiprocessor support**: the original argument against it was that
 yabridge elevates exactly *one* thread per host to FIFO 85 (`audio`) while every
-Kontakt-spawned thread (`worker`, `SC3 TaskScheduler`) sits at FIFO 5 through Wine's
-priority mapping — so enabling MP would make the FIFO-85 thread block on FIFO-5 workers
-that all 64 Bitwig audio threads can preempt, the same inversion on every buffer.
-`steer-threads.sh` now moves those FIFO-5 workers to the E-cores, where no FIFO-85
-thread runs, which removes exactly that preemption. **The argument no longer holds as
-stated, and MP has not been measured since.** Leave it off until someone does.
+Kontakt-spawned thread (`worker`, `SC3 TaskScheduler`) sits at FIFO 5 through
+yabridge's `set_realtime_priority()` — so enabling MP would make the FIFO-85 thread
+block on FIFO-5 workers that all 64 Bitwig audio threads can preempt, the same
+inversion on every buffer. `steer-threads.sh` now moves those FIFO-5 workers to the
+E-cores, where no FIFO-85 thread runs, which removes exactly that preemption. **The
+argument no longer holds as stated, and MP has not been measured since.** Leave it off
+until someone does.
 
 ## System tuning — what to keep
 
@@ -429,8 +430,8 @@ Thread census across the chain:
   of which are parked and burn ~0 ms, so they are not a factor.
 - **87 threads at `SCHED_FIFO` 5** — `yabridge-host/worker`, `parameters`,
   `SC3 TaskScheduler`, `URET_Worker`, `wine_sechost_de`, `BitwigPluginHost/host-callbacks`.
-  Wine's priority mapping puts every plugin-spawned thread here. They are realtime in
-  name only: they rank below all 121 audio threads.
+  yabridge's `set_realtime_priority()` calls put every plugin-spawned thread here. They
+  are realtime in name only: they rank below all 121 audio threads.
 - **325 `SCHED_OTHER` threads** — `wineserver`, the Bitwig JVM UI, `explorer.exe`,
   `NIHardwareService.exe`, `NIHostIntegrationAgent.exe`, and 9× FM8 `DBScan`.
 
@@ -474,8 +475,8 @@ actually is:
   `SCHED_FIFO`: it is single-threaded and spinning there would be worse.
 
 Splitting by *priority* rather than by policy matters — a policy-based split leaves the
-87 FIFO-5 Wine helpers on the audio cores, where they are starved by the 121 FIFO-85
-threads exactly like a `SCHED_OTHER` thread would be.
+87 FIFO-5 threads from yabridge's `set_realtime_priority()` on the audio cores, where
+they are starved by the 121 FIFO-85 threads exactly like a `SCHED_OTHER` thread would be.
 
 `start-bitwig.sh` runs it as `--watch 15` alongside Bitwig (`STEER_THREADS`, default
 on) and undoes it from `restore()`. The watch is not optional: threads keep appearing

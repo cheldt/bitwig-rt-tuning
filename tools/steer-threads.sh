@@ -17,10 +17,11 @@
 #
 # So: only the threads that actually carry audio keep the P-cores, everything else is
 # moved to the E-cores. Split on *priority*, not policy -- yabridge elevates exactly
-# one thread per host to FIFO 85 ('audio') while Wine's priority mapping leaves every
-# plugin-spawned thread ('worker', 'parameters', 'SC3 TaskScheduler', 'URET_Worker') at
-# FIFO 5. Those 87 FIFO-5 threads are realtime in name only: they rank below all 121
-# audio threads and are starved by them exactly like a SCHED_OTHER thread would be.
+# one thread per host to FIFO 85 ('audio') while its own `set_realtime_priority()` calls
+# leave every plugin-spawned thread ('worker', 'parameters', 'SC3 TaskScheduler',
+# 'URET_Worker') at FIFO 5. Those 87 FIFO-5 threads are realtime in name only: they
+# rank below all 121 audio threads and are starved by them exactly like a SCHED_OTHER
+# thread would be.
 #
 # Result on that session: Bitwig Load MAX 14.808ms -> 0.904ms against a 5.333ms
 # deadline, period jitter 4.22% -> 0.90%, with nothing else changed. Full write-up in

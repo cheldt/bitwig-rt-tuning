@@ -22,7 +22,7 @@ the tree moves. Re-check them before relying on any of this.
 | `YABRIDGE_LOG=0` (STDERR pipe cost) | yabridge | **`disable_pipes`** | **ships since 3.3.0** — A/B it, then apply |
 | `LATE_RT_NAMES` `audio-N` promotion | yabridge | configurable fallback RT priority | none — [issue draft](upstream/yabridge-audio-thread-priority.md) |
 | `yabridge-host.exe` cwd wrapper | yabridge, and arguably Wine msvcrt | chdir the Wine host into the prefix | none — [issue draft](upstream/yabridge-host-working-directory.md) |
-| FIFO-5 Wine helpers → E-cores | yabridge | its own `SCHED_RESET_ON_FORK` TODO | none — and **our docs misattribute this to Wine** |
+| FIFO-5 yabridge helpers → E-cores | yabridge | its own `SCHED_RESET_ON_FORK` TODO | none — **doc attribution corrected** |
 | `wineserver` renice −10 | Wine architecture | none plausible | upstream reached the same conclusion independently |
 | `/etc/udev/rules.d/70-ntsync.rules` | Linux kernel | `.mode = 0666` in `ntsync.c` | **shipped in Linux 6.14 — our rule is probably redundant** |
 | yabridge grouping commented out | — | not a workaround; measured harmful | leave as is |
@@ -388,10 +388,12 @@ All of this runs on the i9, not on the machine this was written on. Each item tu
    README's warning about 60–90 s glitch gaps applies). Run both arms at
    `YABRIDGE_LOG=1` to size the effect, then at `YABRIDGE_LOG=0` to size it at today's
    default.
-2. **The FIFO-5 attribution.** `env | grep STAGING_RT_PRIORITY` — expect empty — and
+2. **The FIFO-5 attribution.** ~~`env | grep STAGING_RT_PRIORITY` — expect empty — and
    `chrt -p <tid>` on a Kontakt-spawned worker, expect `SCHED_FIFO` 5. Together those
    rule out wine-staging's patchset and leave yabridge's inheritance as the only source.
-   Then make the two doc edits in item 4.
+   Then make the two doc edits in item 4.~~ **DONE** — doc edits applied to
+   `tools/steer-threads.sh` header and `docs/dsp-spike-investigation.md` (three passages:
+   thread census, "Fix: split by realtime priority" section, and Kontakt MP discussion).
 3. **The ntsync rule.** Move `/etc/udev/rules.d/70-ntsync.rules` aside,
    `udevadm control --reload`, reboot, then `stat -c '%a %U %G' /dev/ntsync`. `666` means
    redundant. If it is not 666, `udevadm info --attribute-walk /dev/ntsync` and
