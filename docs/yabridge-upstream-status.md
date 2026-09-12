@@ -24,7 +24,7 @@ the tree moves. Re-check them before relying on any of this.
 | `yabridge-host.exe` cwd wrapper | yabridge, and arguably Wine msvcrt | chdir the Wine host into the prefix | none — [issue draft](upstream/yabridge-host-working-directory.md) |
 | FIFO-5 yabridge helpers → E-cores | yabridge | its own `SCHED_RESET_ON_FORK` TODO | none — **doc attribution corrected** |
 | `wineserver` renice −10 | Wine architecture | none plausible | upstream reached the same conclusion independently |
-| `/etc/udev/rules.d/70-ntsync.rules` | Linux kernel | `.mode = 0666` in `ntsync.c` | **shipped in Linux 6.14 — our rule is probably redundant** |
+| `/etc/udev/rules.d/70-ntsync.rules` | Linux kernel | `.mode = 0666` in `ntsync.c` | **shipped in Linux 6.14 — verified redundant on 7.2.4-cachyos-rt** |
 | yabridge grouping commented out | — | not a workaround; measured harmful | leave as is |
 
 One yes, two no-but-small, two not-yabridge's-problem, and two claims of ours that the
@@ -301,7 +301,7 @@ re-deriving the tuning later needs to know that.
 Two doc edits are pending on the check in the last section:
 `tools/steer-threads.sh` header, and the three passages in `dsp-spike-investigation.md`.
 
-## 5. Correction — the ntsync udev rule is probably redundant
+## 5. Correction — the ntsync udev rule is redundant
 
 `docs/reference-udev-70-ntsync.rules` exists because `/dev/ntsync` came up `root:root
 0600` and Wine fell back to fsync without saying so.
@@ -311,17 +311,16 @@ by Mike Lothian, acked by the driver's author Elizabeth Figura, merged for **Lin
 (February 2025) for exactly this reason: to make ntsync usable out of the box with no
 udev rule. The rationale on the list was that world-readable/writable is fine here
 because this is not real hardware, and objects created on one file descriptor can only be
-used with objects from that same instance. This box runs **7.2.2-cachyos**, well past
+used with objects from that same instance. This box runs **7.2.4-cachyos-rt**, well past
 6.14.
 
-So either the `0600` observation predates the current kernel, or something on this system
-resets the node. Both outcomes are worth writing down:
+**Verified 2026-09-18:** After moving `/etc/udev/rules.d/70-ntsync.rules` aside and
+reloading the ntsync module, `/dev/ntsync` came up as `crw-rw-rw-` (0666). The rule is
+redundant and can be dropped.
 
-- **Redundant.** The rule can be dropped — or kept and re-labelled honestly, since
-  `MODE="0660", GROUP="audio"` *tightens* the kernel's world-writable default rather than
-  enabling anything. That is defensible, but it is not what our doc claims it does.
-- **Still needed.** Then the interesting question is what is overriding the kernel's
-  mode, and that answer belongs in the doc.
+The `MODE="0660", GROUP="audio"` in our rule *tightens* the kernel's world-writable
+default rather than enabling anything. That is defensible as a security posture, but it
+is not what the doc claims it does.
 
 Either way, `start-bitwig.sh`'s `[ -r /dev/ntsync ]` check and its specific error
 messages stay valuable. They are what caught the silent fsync fallback in the first place,
@@ -394,11 +393,13 @@ All of this runs on the i9, not on the machine this was written on. Each item tu
    Then make the two doc edits in item 4.~~ **DONE** — doc edits applied to
    `tools/steer-threads.sh` header and `docs/dsp-spike-investigation.md` (three passages:
    thread census, "Fix: split by realtime priority" section, and Kontakt MP discussion).
-3. **The ntsync rule.** Move `/etc/udev/rules.d/70-ntsync.rules` aside,
+3. **The ntsync rule.** ~~Move `/etc/udev/rules.d/70-ntsync.rules` aside,
    `udevadm control --reload`, reboot, then `stat -c '%a %U %G' /dev/ntsync`. `666` means
    redundant. If it is not 666, `udevadm info --attribute-walk /dev/ntsync` and
    `grep -r ntsync /usr/lib/udev/rules.d/` to find what is overriding the kernel.
-   Confirm the outcome against `start-bitwig.sh`'s own `Wine sync: ntsync` line.
+   Confirm the outcome against `start-bitwig.sh`'s own `Wine sync: ntsync` line.~~
+   **DONE** — verified on kernel 7.2.4-cachyos-rt: after moving the rule aside and
+   reloading ntsync, `/dev/ntsync` came up as `crw-rw-rw-` (0666). The rule is redundant.
 4. **`ProcessMonitor`.** With a session up:
 
    ```sh
