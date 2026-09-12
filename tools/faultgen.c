@@ -31,11 +31,21 @@ static void *worker(void *arg) {
     return NULL;
 }
 
+#define MAX_THREADS 64
+
 int main(int argc, char **argv) {
     int nthreads = 4;
     if (argc > 1) secs = atof(argv[1]);
     if (argc > 2) nthreads = atoi(argv[2]);
-    pthread_t t[64];
+    // Unclamped, `faultgen 1 100` wrote 36 pthread_t past the end of t[] and died in
+    // the stack protector -- after a full run, so the fault numbers it had just printed
+    // looked perfectly usable.
+    if (nthreads < 1) nthreads = 1;
+    if (nthreads > MAX_THREADS) {
+        fprintf(stderr, "faultgen: capping %d threads at %d\n", nthreads, MAX_THREADS);
+        nthreads = MAX_THREADS;
+    }
+    pthread_t t[MAX_THREADS];
     struct timespec a, b;
     clock_gettime(CLOCK_MONOTONIC, &a);
     for (int i = 0; i < nthreads; i++) pthread_create(&t[i], NULL, worker, NULL);

@@ -134,20 +134,33 @@ set_proc_affinity() {
 
 # --- restore ----------------------------------------------------------------
 
+# A missing baseline means the state file was lost, truncated, or never written. The
+# restore steps below used to fall back to a hard-coded constant in that case, which is
+# this one machine's remembered value dressed up as a default: on any other box
+# `--restore` would confidently write the wrong number. Skipping the step is the correct
+# answer -- leaving a tuned value in place is harmless, inventing a baseline is not.
+missing_baseline() {
+    echo "  no recorded baseline for $1, leaving it as it is" >&2
+}
+
 restore() {
     [ "$restored" -eq 1 ] && return
     restored=1
 
     echo "Restoring system to normal power saving mode..."
 
-    # Baseline recorded at startup. On the --restore path this is the only source
-    # of truth; without it we would be guessing at the values to put back.
+    # Baseline recorded at startup. On the --restore path this is the only source of
+    # truth, so each step below is skipped when its value is missing from it.
     if [ -f "$STATE_FILE" ]; then
         # shellcheck disable=SC1090
         . "$STATE_FILE"
     fi
 
-    sudo cpupower frequency-set -g "${GOV_BEFORE:-powersave}" >/dev/null
+    if [ -n "${GOV_BEFORE:-}" ]; then
+        sudo cpupower frequency-set -g "$GOV_BEFORE" >/dev/null
+    else
+        missing_baseline "the CPU governor"
+    fi
 
     if [ "${CSTATES_CHANGED:-0}" -eq 1 ]; then
         for s in "${DEEP_CSTATES[@]}"; do
@@ -178,18 +191,34 @@ restore() {
         systemctl --user start "$EE_UNIT" 2>/dev/null
     fi
 
-    sudo sysctl -q vm.swappiness="${SWAPPINESS_BEFORE:-150}"
-    sudo sysctl -q vm.min_free_kbytes="${MINFREE_BEFORE:-22762}"
+    if [ -n "${SWAPPINESS_BEFORE:-}" ]; then
+        sudo sysctl -q vm.swappiness="$SWAPPINESS_BEFORE"
+    else
+        missing_baseline "vm.swappiness"
+    fi
+    if [ -n "${MINFREE_BEFORE:-}" ]; then
+        sudo sysctl -q vm.min_free_kbytes="$MINFREE_BEFORE"
+    else
+        missing_baseline "vm.min_free_kbytes"
+    fi
 
     for dev in "${NVME_DEVS[@]}"; do
         var="NVME_${dev}_BEFORE"
-        set_nvme_sched "$dev" "${!var:-kyber}"
+        sched="${!var:-}"
+        if [ -n "$sched" ]; then
+            set_nvme_sched "$dev" "$sched"
+        else
+            missing_baseline "the $dev scheduler"
+        fi
     done
 
-    if [ -n "$STEER_PID" ]; then
-        kill "$STEER_PID" 2>/dev/null
-        "$STEER_SH" --restore >/dev/null 2>&1
-    fi
+    # Killing the steward and undoing its work are two separate things, and only the
+    # first one needs a PID. On the --restore path STEER_PID is empty -- the session
+    # that owned it has crashed and is gone -- but the threads it moved are still
+    # pinned to their half of the machine. Gating the sweep on STEER_PID meant crash
+    # recovery restored everything except the one thing the steward had changed.
+    [ -n "$STEER_PID" ] && kill "$STEER_PID" 2>/dev/null
+    [ -x "$STEER_SH" ] && "$STEER_SH" --restore >/dev/null 2>&1
 
     [ -n "$SUDO_KEEPALIVE" ] && kill "$SUDO_KEEPALIVE" 2>/dev/null
     rm -f "$STATE_FILE"
