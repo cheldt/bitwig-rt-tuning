@@ -408,5 +408,24 @@ All of this runs on the i9, not on the machine this was written on. Each item tu
    Check whether `ProcessMonitor` sits alongside the yabridge-owned names (`audio-N`,
    `watchdog`, `wine-stdio`). If it does not, it is NI's and `YABRIDGE_NO_WATCHDOG` is
    irrelevant.
-5. **This document.** Every upstream claim cites a file and a symbol, not a line number.
-   Re-check each against commit `b580a9f7` before acting on it — master moves.
+5. **This document.** ~~Every upstream claim cites a file and a symbol, not a line number.
+   Re-check each against commit `b580a9f7` before acting on it — master moves.~~
+   **DONE** — verified all citations against `b580a9f7`:
+
+   - `src/common/utils.h`: `set_realtime_priority(bool, int = 5)` declaration with
+     `SCHED_RESET_ON_FORK` TODO comment — **confirmed**
+   - `src/common/utils.cpp`: `set_realtime_priority()` is `sched_setscheduler(0,
+     SCHED_FIFO/SCHED_OTHER, &params)` — **confirmed**
+   - `src/common/utils.h`: `audio_thread_priority_synchronization_interval = 10` —
+     **confirmed**
+   - `src/wine-host/bridges/vst3.cpp`: `run()` calls `set_realtime_priority(true)` before
+     naming thread `"audio-" + instance_id` — **confirmed**
+   - `src/wine-host/bridges/vst3.cpp`: plugin construction wrapped with
+     `set_realtime_priority(true/false)` — **confirmed**
+   - `src/plugin/bridges/vst3-impls/plugin-proxy.cpp`: `new_realtime_priority` populated
+     only in `process()` — **confirmed**
+   - `src/plugin/bridges/common.h`: `wine-stdio` thread name and comment about not being
+     realtime — **confirmed**
+   - `src/plugin/bridges/common.h`: `watchdog` thread name — **confirmed**
+   - `src/plugin/host-process.cpp`: `disable_picks` spawn logic with Gorilla Engine
+     comment — **confirmed**
