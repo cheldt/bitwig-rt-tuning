@@ -125,7 +125,8 @@ perf.sh                         standalone one-shot tweaks (no restore; SMT swit
 tools/steer-threads.sh          the rtprio split; --watch loop and --restore
 tools/measure-xruns.sh          deadline misses on the playback path
 tools/catch-spike.py            find the thread burning CPU in a spike
-tools/catch-stall.py            tell a long *run* apart from a long *wait*
+tools/catch-stall.py            tell a long *run* apart from a long *wait* (wait column unreliable, see header)
+tools/catch-gap.py              find gaps in the audio callback and attribute them to a thread
 tools/catch-load.py             sample the audio chain across a plugin load
 tools/summarize-load.py         reduce a catch-load.py run to the five decisive views
 tools/faultgen.c                controlled minor-fault storm, to test memory pressure
@@ -133,6 +134,7 @@ tools/run-arm.sh                one measurement arm: sampler + a tuned Bitwig se
 tools/ab-nvme-sched.sh          A/B the NVMe scheduler in one live session
 docs/dsp-spike-investigation.md the investigation
 docs/kontakt7-zmq-crash.md      why the yabridge host needs a cwd inside the wine prefix
+docs/diva-callback-stall.md     a plug-in stalling the callback, and a schedstat field that lied
 docs/yabridge-upstream-status.md which of these workarounds an upstream fix would delete
 docs/upstream/                  issue drafts for the two that have no upstream fix yet
 docs/measurements/              raw logs behind the claims
@@ -179,10 +181,17 @@ length of the session), `cpupower`, `taskset`, `nvidia-settings`, and `pw-top`.
 ## Measuring
 
 Don't trust Bitwig's Load MAX for small differences — two identical runs
-measured 5.402 and 6.052 ms. Use `tools/measure-xruns.sh`, watch the *output*
-node (the RME capture node has no links and its error count is a red herring),
-and run for at least 300 s: glitch bursts have 60–90 s gaps, so short windows
-give false "fixed" readings.
+measured 5.402 and 6.052 ms. Note also that it latches: it is the maximum since
+the graph was last reset, so a figure from a project load survives for the rest
+of the session. Reset it before judging steady state. Use
+`tools/measure-xruns.sh`, watch the *output* node, and run for at least 300 s:
+glitch bursts have 60–90 s gaps, so short windows give false "fixed" readings.
+
+The RME *capture* node's error count is inflated — the node has no links — and
+the README used to call it a pure red herring. That is too strong: it ran at
+1–4.7 errors/s throughout a glitching session and went to exactly zero over 300 s
+the moment the stalls stopped. Judge by the output node and Bitwig, but a capture
+count that suddenly stops moving is information.
 
 Verify placement before trusting any measurement. The steward can fail to
 launch with no symptom other than a bad Load MAX.
@@ -199,6 +208,15 @@ Two things learned the hard way while chasing the plugin-load spike:
   invisibility. The 2 ms rate in `tools/catch-load.py` is what finally located
   it — raising the sampling rate beat reaching for `perf` and `bpftrace`, both of
   which were installed and turned out unnecessary.
+
+`schedstat`'s runqueue-wait field (field 2, the kernel's `sched_info.run_delay`)
+is **not reliable on 7.2.4-cachyos-rt**: it reported 210 ms of wait inside a
+1.91 ms window, which is not physical, and once attributed 98,497 ms of CPU in
+90 s to a process `/proc/<pid>/stat` puts at 0.06 cores. Small values still mean
+something — the 0.538 ms `wait_max` below ruled scheduling delay out, and a
+spurious jump cannot fake a small maximum — but do not use it to locate a large
+spike. `tools/catch-gap.py` triggers on a plain event count instead, and
+[`docs/diva-callback-stall.md`](docs/diva-callback-stall.md) has the detail.
 
 `schedstat` cannot see block time at all: it accounts for on-CPU and
 runqueue-wait time, and a thread asleep on a futex is in neither. With

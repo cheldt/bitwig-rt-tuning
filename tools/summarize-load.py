@@ -135,6 +135,11 @@ def main():
     print("=" * 78)
     print("2. RT THREAD RUNQUEUE WAIT > %.2f ms in one %d ms window"
           % (a.wait_thresh_ms, int((meta or {}).get("fast", 0.02) * 1000)))
+    print("   WARNING: the wait column comes from schedstat field 2 (sched_info.run_delay),")
+    print("   which is unreliable on 7.2.4-cachyos-rt -- it reports waits longer than the")
+    print("   window that contains them. Small values are still meaningful; large ones are")
+    print("   not. See the header of tools/catch-stall.py, and use tools/catch-gap.py to")
+    print("   locate a large spike. The run column and section 3 are unaffected.")
     print("%8s %7s %7s %5s  %-18s %s" % ("ts", "wait_ms", "run_ms", "prio", "comm", "process"))
     wait_tot = defaultdict(float)
     run_tot = defaultdict(float)

@@ -20,6 +20,27 @@ a lock, and a bigger buffer only hides it.
 Only threads at realtime priority >= RT_MIN are watched, so the output is the audio
 path and nothing else.
 
+BROKEN ON THIS KERNEL (7.2.4-cachyos-rt, found 2026-09-12) -- DO NOT TRUST THE WAIT
+COLUMN. schedstat field 2 is the kernel's sched_info.run_delay, and on this box it
+reports values that are not physical: a single tid accumulating 210 ms of runqueue
+wait inside a 1.91 ms window, and 219 ms inside a 5.0 ms one. A thread can wait at
+most as long as the window is wide, so these are the counter, not the machine. Two
+independent readers -- this tool and a separate raw /proc loop -- produce them, and
+the reliable counters flatly disagree: schedstat once attributed 98,497 ms of CPU in
+90 s to a process that /proc/<pid>/stat puts at 0.06 cores. The likely cause is a
+stale sched_info.last_queued after toggling kernel.sched_schedstats, so the first
+enqueue after enabling computes its delta against an ancient timestamp.
+
+What this does NOT invalidate: small values, and the RUN column. The original
+investigation used wait_max = 0.538 ms to rule scheduling delay *out*, and a bogus
+jump cannot fake a small maximum. RUN (field 1) stayed consistent with
+/proc/<pid>/stat throughout.
+
+For locating a large spike, use tools/catch-gap.py instead. It triggers on schedstat
+field 3, a plain event count rather than a time, and attributes the stall by diffing
+on-CPU time across the gap. That is what actually found the cause; this tool sent the
+investigation after phantom 200 ms stalls for several rounds first.
+
 IMPORTANT -- the observer can lie. This process is SCHED_OTHER, and if it is itself
 descheduled the sample window stretches and *every* delta inside it inflates by the
 same amount. The tell is unrelated threads reporting near-identical huge values in one
