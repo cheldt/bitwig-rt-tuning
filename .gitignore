@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+
+# tools/faultgen.c is committed as source; the binary is not.
+faultgen

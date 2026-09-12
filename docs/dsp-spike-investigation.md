@@ -3,7 +3,7 @@
 **Date:** 2026-08-29
 **Machine:** i9-13900K (8 P-cores / 16 E-cores), RME HDSPe AIO Pro, 32 GB,
 kernel 7.2.2-cachyos-rt-bore-lto, PipeWire 1.6.8, WirePlumber 0.5.15,
-Bitwig Studio (native PipeWire client), Kontakt 6 via yabridge 5.1.1 (Wine 11.15)
+Bitwig Studio (native PipeWire client), Kontakt 6 via yabridge 5.1.1 (Wine 11.14 TkG staging)
 
 ## Outcome
 
@@ -236,7 +236,7 @@ two separate unsteered windows, exactly zero once the split was restored. Still 
 arm, and the windows were sequential rather than interleaved, so treat the size of the
 effect as unestablished — the direction is not in doubt.
 
-**Fixed** in `ce750d1`: `readlink -f` before `dirname`; refuse to pin at all when the
+**Fixed** in `502661e`: `readlink -f` before `dirname`; refuse to pin at all when the
 steward is missing, falling back to `PIN_BITWIG=0` rather than starting a degraded
 session; and a liveness check one second after launch, since a steward that exits on its
 own leaves the tree pinned with nothing steering it.
@@ -771,11 +771,20 @@ ts  1.04  bitwig-studio    0-15     (taskset from start-bitwig.sh, then swept)
 ts  5.46  BitwigAudioEngi  16-31    <- forked from a JVM worker already on the E-cores
 ts  7.54  BitwigPluginHos  16-31    <- inherits it, and creates 33 SCHED_FIFO 85
                                        audio threads inside that mask
-ts 16.22  BitwigPluginHos  0-15     <- the next 15 s sweep, 8.7 s too late
 ```
 
-So 33 realtime audio threads at priority 85 ran on 4.3 GHz E-cores for 8.7 s of a 6.8 s
-plugin load. The steward's own sweep is the natural experiment that proves it:
+Those three timestamps are lifted from the *pre-setting* arm's trace, which is where the
+process tree was logged from launch; the inheritance chain is identical in every arm. For
+how long the threads then stay there, the baseline arm is the one to read — it instantiates
+at ts 74.80, and the sweep that rescues them lands at ts 77.84:
+
+```
+ts 69.29   33 PluginsThreadPo (SCHED_FIFO 85)  mask 16-31
+ts 77.84   33 PluginsThreadPo (SCHED_FIFO 85)  mask 0-15   <- the next 15 s sweep
+```
+
+So 33 realtime audio threads at priority 85 ran on 4.3 GHz E-cores for 8.55 s across a
+6.8 s plugin load. The steward's own sweep is the natural experiment that proves it:
 
 ```
 sec 69  0.491 ms      sec 76  0.315
@@ -814,7 +823,7 @@ Result:
 
 | | Load MAX | Load AVG | `data-loop.0` max in window | E-core window |
 |---|---|---|---|---|
-| baseline (3 runs) | 2.115 / 2.069 / 2.054 ms | 0.082–0.118 ms | 2.075 ms | 8.7 s |
+| baseline (3 runs) | 2.115 / 2.069 / 2.054 ms | 0.082–0.118 ms | 2.075 ms | 8.55 s |
 | burst sweep | **1.867 ms** | **0.064 ms** | **0.455 ms** | **0.52 s** |
 
 Detection latency measured 240 ms on a decoy. On-CPU time in the load window fell 4.6× at

@@ -128,4 +128,4 @@ signal.
 - Wine 11.16 TkG staging, ntsync
 - Bitwig Studio, plugin sandboxing "By Plugin"
 - Kontakt 6 / Kontakt 7 / FM8 via yabridge
-- Linux 7.2.2 (CachyOS, RT/BORE), PipeWire 1.6.8, quantum 256/48000
+- Linux 7.2.4 (CachyOS, RT/BORE), PipeWire 1.6.8, quantum 256/48000

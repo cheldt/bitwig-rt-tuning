@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turn catch-load.py JSONL into the four things that decide the diagnosis.
+"""Turn catch-load.py JSONL into the five things that decide the diagnosis.
 
   1. Non-RT threads sitting on the P-cores over time -- the steer-threads.sh
      sweep window. A plugin load spawns threads that inherit the P-core mask.

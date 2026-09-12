@@ -298,8 +298,9 @@ policy"* — stops being necessary. The rule stays correct and harmless either w
 reason it exists would have moved from Wine to yabridge and then disappeared. Anyone
 re-deriving the tuning later needs to know that.
 
-Two doc edits are pending on the check in the last section:
-`tools/steer-threads.sh` header, and the three passages in `dsp-spike-investigation.md`.
+Both doc edits are now applied: the `tools/steer-threads.sh` comments and the three
+passages in `dsp-spike-investigation.md` all credit `set_realtime_priority()` rather than
+Wine's priority mapping.
 
 ## 5. Correction — the ntsync udev rule is redundant
 
@@ -314,7 +315,7 @@ because this is not real hardware, and objects created on one file descriptor ca
 used with objects from that same instance. This box runs **7.2.4-cachyos-rt**, well past
 6.14.
 
-**Verified 2026-09-18:** After moving `/etc/udev/rules.d/70-ntsync.rules` aside and
+**Verified 2026-09-12:** After moving `/etc/udev/rules.d/70-ntsync.rules` aside and
 reloading the ntsync module, `/dev/ntsync` came up as `crw-rw-rw-` (0666). The rule is
 redundant and can be dropped.
 
@@ -419,8 +420,11 @@ All of this runs on the i9, not on the machine this was written on. Each item tu
      SCHED_FIFO/SCHED_OTHER, &params)` — **confirmed**
    - `src/common/utils.h`: `audio_thread_priority_synchronization_interval = 10` —
      **confirmed**
-   - `src/wine-host/bridges/vst3.cpp`: `run()` calls `set_realtime_priority(true)` before
-     naming thread `"audio-" + instance_id` — **confirmed**
+   - `src/wine-host/bridges/vst3.cpp`: `register_object_instance()` calls
+     `set_realtime_priority(true)` before naming thread `"audio-" + instance_id` —
+     **confirmed** (re-checked against `b580a9f7`; an earlier draft of this list said
+     `run()`, which is where the *other* three `set_realtime_priority(true)` calls in
+     that file live)
    - `src/wine-host/bridges/vst3.cpp`: plugin construction wrapped with
      `set_realtime_priority(true/false)` — **confirmed**
    - `src/plugin/bridges/vst3-impls/plugin-proxy.cpp`: `new_realtime_priority` populated
@@ -428,5 +432,5 @@ All of this runs on the i9, not on the machine this was written on. Each item tu
    - `src/plugin/bridges/common.h`: `wine-stdio` thread name and comment about not being
      realtime — **confirmed**
    - `src/plugin/bridges/common.h`: `watchdog` thread name — **confirmed**
-   - `src/plugin/host-process.cpp`: `disable_picks` spawn logic with Gorilla Engine
+   - `src/plugin/host-process.cpp`: `disable_pipes` spawn logic with Gorilla Engine
      comment — **confirmed**

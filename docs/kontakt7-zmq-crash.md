@@ -1,6 +1,8 @@
 # Kontakt 7 aborts on load under yabridge — the working directory decides it
 
-Investigated 2026-08-30. Fixed by one `cd` in `start-bitwig.sh`.
+Investigated 2026-08-30. Fixed by a wrapper around `yabridge-host.exe` that `cd`s into
+the prefix — *not* in `start-bitwig.sh`, which cannot reach the plugin hosts' cwd at all.
+See the Fix section.
 
 ## Symptom
 

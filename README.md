@@ -17,8 +17,8 @@ Pro-audio session tuning for Bitwig Studio + Kontakt/yabridge on Linux.
 | CPU | Intel i9-13900K — hybrid, CPUs 0–15 P-cores, 16–31 E-cores |
 | Audio interface | RME HDSPe AIO Pro (`snd_hdspe`, IRQ 16) |
 | RAM | 32 GB |
-| Kernel | 7.2.2-cachyos-rt-bore-lto |
-| Audio stack | PipeWire 1.6.8 / WirePlumber 0.5.15, quantum 256/48000 |
+| Kernel | 7.2.4-cachyos-rt-bore-lto |
+| Audio stack | PipeWire 1.6.8 / WirePlumber 0.5.17, quantum 256/48000 |
 | Host | Bitwig Studio, native PipeWire client |
 | Plugins | Kontakt 6, FM8, Diva via yabridge 5.1.1-57-gb580a9f7 (upstream `master`, Wine 11.16 TkG staging, ntsync) |
 | GPU | Nvidia (proprietary driver, IRQ 211) |
@@ -69,8 +69,11 @@ at 256.
 
 Two consequences worth repeating:
 
-- **Pinning without the steward is worse than not pinning at all.** The script
-  refuses that combination rather than starting a silently degraded session.
+- **Pinning without the steward is worse than not pinning at all.** If the
+  steward script is missing or not executable, the session falls back to
+  `PIN_BITWIG=0` rather than pinning without it. Setting `STEER_THREADS=0` by
+  hand is *not* blocked — it is a deliberate A/B arm — so that combination will
+  start, silently degraded, and is only useful for measurement.
 - **A 512 quantum only masked this.** 256 holds with 11 plugin instances once
   the chain is split correctly.
 
@@ -83,13 +86,13 @@ Same class of cause, opposite direction. `fork()` gives a child the *calling
 thread's* affinity, and Bitwig forks `BitwigPluginHost` from a JVM worker thread
 that the steward has already moved to the E-cores. So the host is born inside
 `16-31` and creates its 33 `SCHED_FIFO` 85 audio threads there — where they stay
-until the next 15 s sweep. Measured: 8.7 s of a 6.8 s plugin load with the audio
-threads on 4.3 GHz cores.
+until the next 15 s sweep. Measured: 8.55 s of thread-time across a 6.8 s plugin
+load with the audio threads on 4.3 GHz cores.
 
 Not fixable by pre-setting the inherited mask: there is no main thread to
 pre-set, because the JVM does not fork from main. `--watch` now polls `/proc`
 every 0.25 s and sweeps in a 12 s burst when a matched process appears. E-core
-window 8.7 s → 0.52 s, Load MAX 2.054 → 1.867 ms, Load AVG 0.104 → 0.064 ms,
+window 8.55 s → 0.52 s, Load MAX 2.054 → 1.867 ms, Load AVG 0.104 → 0.064 ms,
 worst callback on-CPU 2.075 → 0.455 ms.
 
 Then the same bug one level down. yabridge names its per-plugin audio thread
@@ -118,7 +121,7 @@ hypotheses that measured as wrong — is in
 
 ```
 start-bitwig.sh                 session: tune, launch, restore
-perf.sh                         standalone one-shot tweaks (no restore)
+perf.sh                         standalone one-shot tweaks (no restore; SMT switch is opt-in)
 tools/steer-threads.sh          the rtprio split; --watch loop and --restore
 tools/measure-xruns.sh          deadline misses on the playback path
 tools/catch-spike.py            find the thread burning CPU in a spike
@@ -130,6 +133,8 @@ tools/run-arm.sh                one measurement arm: sampler + a tuned Bitwig se
 tools/ab-nvme-sched.sh          A/B the NVMe scheduler in one live session
 docs/dsp-spike-investigation.md the investigation
 docs/kontakt7-zmq-crash.md      why the yabridge host needs a cwd inside the wine prefix
+docs/yabridge-upstream-status.md which of these workarounds an upstream fix would delete
+docs/upstream/                  issue drafts for the two that have no upstream fix yet
 docs/measurements/              raw logs behind the claims
 docs/reference-*                config files and wrappers this setup depends on, for reference
 ```
@@ -145,7 +150,7 @@ Environment knobs, mainly for A/B testing:
 
 | var | default | effect |
 |---|---|---|
-| `PIN_BITWIG` | `1` | `0` = no CPU placement at all |
+| `PIN_BITWIG` | `1` | `0` = do not place Bitwig's tree, and do not start the steward. PipeWire's own placement and the IRQ affinities still apply |
 | `STEER_THREADS` | `1` | `0` = pin, but do not re-split by rtprio |
 | `STEER_INTERVAL` | `15` | seconds between steward sweeps |
 | `YABRIDGE_LOG` | `0` | `1` = enable yabridge debug log (costs DSP) |
@@ -153,7 +158,9 @@ Environment knobs, mainly for A/B testing:
 | `YABRIDGE_DEBUG_FILE` | `/tmp/yabridge.log` | where that log goes |
 
 `tools/steer-threads.sh` has its own knobs. It inherits the environment from
-`start-bitwig.sh`, so setting them on the session command line reaches it:
+`start-bitwig.sh`, so setting them on the session command line reaches it —
+except `PCORES` and `ECORES`, which `start-bitwig.sh` reassigns unconditionally
+before launching the steward. To change the split, edit both files:
 
 | var | default | effect |
 |---|---|---|
@@ -163,7 +170,8 @@ Environment knobs, mainly for A/B testing:
 | `LATE_RT_NAMES` | `^audio-[0-9]+$` | thread comms promoted by name |
 | `LATE_RT_PROCS` | `^yabridge-host\.e$` | processes the name rule applies in |
 | `WINESERVER_NICE` | `-10` | nice level forced on `wineserver` |
-| `PCORES` / `ECORES` | `0-15` / `16-31` | the split itself |
+| `PCORES` / `ECORES` | `0-15` / `16-31` | the split itself. Not settable from the session command line — see above |
+| `ALLCORES` | `0-31` | the mask `--restore` hands every thread back to |
 
 Requires passwordless-ish `sudo` (the script keeps the timestamp alive for the
 length of the session), `cpupower`, `taskset`, `nvidia-settings`, and `pw-top`.

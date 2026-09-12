@@ -157,7 +157,7 @@ root has the same exposure. `C:\` is what a plugin would see on Windows.
 - yabridge `5.1.1-57-gb580a9f7` (upstream `master`)
 - Wine 11.16 TkG staging, ntsync
 - Bitwig Studio 5.x and `carla-single` (both reproduce)
-- Linux 7.2.2 (CachyOS)
+- Linux 7.2.4 (CachyOS)
 
 ---
 

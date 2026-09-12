@@ -1,5 +1,5 @@
 2026-08-30. Session started via the ~/.local/bin symlink, so SCRIPT_DIR resolved to the
-link's directory and tools/steer-threads.sh was never launched (fixed in ce750d1).
+link's directory and tools/steer-threads.sh was never launched (fixed in 502661e).
 Measured before and after starting the steward by hand, same session, same project, same
 playhead, nvme scheduler held at 'none' throughout.
 

@@ -46,7 +46,8 @@ ALLCORES=${ALLCORES:-0-31}
 WINESERVER_NICE=${WINESERVER_NICE:--10}
 
 # Realtime priority at or above this keeps a P-core. Bitwig and yabridge both use 85
-# for audio threads; Wine maps everything else to 5.
+# for audio threads. Everything else in a yabridge host arrives at 5, from yabridge's own
+# set_realtime_priority() default -- not from Wine's priority mapping, as this said before.
 RT_MIN=${RT_MIN:-50}
 
 # A plugin load is the one event the slow sweep cannot cover. Bitwig forks
