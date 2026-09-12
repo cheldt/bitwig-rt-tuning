@@ -205,3 +205,15 @@ runqueue-wait time, and a thread asleep on a futex is in neither. With
 `kernel.sched_schedstats=1`, `/proc/<tid>/sched` adds `sum_block_runtime`,
 `iowait_sum` and `wait_max` — and note those are float *milliseconds*, so parsing
 them as integers throws away exactly the resolution they exist for.
+
+## License
+
+MIT — see [`LICENSE`](LICENSE). The scripts here are hard-coded for one machine,
+so the useful thing to take is the approach, not the constants.
+
+Two things in this repo are not mine to license. The short yabridge source
+excerpts quoted in `docs/yabridge-upstream-status.md` and `docs/upstream/` are
+from [yabridge](https://github.com/robbert-vdh/yabridge), which is GPL-3.0; they
+are quoted for citation. `docs/reference-*` are configuration files for
+PipeWire/WirePlumber, yabridge and udev — they record what this setup depends on,
+and each belongs to whatever project reads it.
